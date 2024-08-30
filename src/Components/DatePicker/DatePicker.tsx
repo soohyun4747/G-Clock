@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import './DatePicker.css';
-import { Calendar } from 'Icons/Calendar/Calendar';
+import { CalendarIcon } from 'Icons/Calendar';
 
 export function DatePicker() {
 	const [date, setDate] = useState<Date>(new Date());
@@ -12,7 +12,7 @@ export function DatePicker() {
 	return (
 		<div className='DatePickerContainerDiv'>
 			<div className='DatePickerInputDiv'>
-				<Calendar />
+				<CalendarIcon />
 				<input
 					className='DatePickerInput'
 					value={dateStr}

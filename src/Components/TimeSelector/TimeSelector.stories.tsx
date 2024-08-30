@@ -1,6 +1,7 @@
 import { Story } from '@storybook/react';
 import { TimeSelector, TimeSelectorProps } from './TimeSelector';
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
+import { amPm } from 'lib/const';
 
 export default {
 	component: TimeSelector,
@@ -8,22 +9,21 @@ export default {
 };
 
 const Template = (args: TimeSelectorProps) => {
-	const [minute, setMinute] = useState<number>(args.minute);
-	const [hour, setHour] = useState<number>(args.hour);
+	// const [minute, setMinute] = useState<number>(args.minute);
+	// const [hour, setHour] = useState<number>(args.hour);
+	// const [amOrPm, setAmOrPm] = useState<string | number>(amPm.am);
+	const [date, setDate] = useState<Date>(args.date);
 
-    console.log({hour, minute});
-    
-	return <TimeSelector
-		minute={minute}
-		hour={hour}
-		setMinute={setMinute}
-		setHour={setHour}
-	/>;
+	return (
+		<TimeSelector
+			date={date}
+			setDate={setDate}
+		/>
+	);
 };
 
 export const Default: Story<TimeSelectorProps> = Template.bind({});
 
 Default.args = {
-	hour: 2,
-	minute: 30,
+	date: new Date(),
 };

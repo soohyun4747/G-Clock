@@ -25,13 +25,13 @@ export const createTimeScrollDict = () => {
 	return timeScrollDict;
 };
 
-export const getCurrentMinInFiveMulti = () => {
-	const currentMin = new Date().getMinutes();
-	const left = currentMin % 5;
+export const getDateMinuteInFiveMulti = (date: Date) => {
+	const minutes = date.getMinutes();
+	const left = minutes % 5;
 
 	if (left <= 2) {
-		return currentMin - left;
+		return minutes - left;
 	} else {
-		return currentMin + left;
+		return minutes + (5 - left);
 	}
 };

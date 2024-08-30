@@ -1,38 +1,40 @@
 import { useState } from 'react';
 import './GroupButton.css';
 
+export interface ButtonProps {
+	label: string;
+	value: string | number;
+	onClick: (value: string | number) => void;
+}
+
 export interface GroupButtonProps {
-	value: number;
-	labels: string[];
+	value: string | number;
+	buttonsProps: ButtonProps[];
 	selectedColor?: string;
 	width?: number;
 	height?: number;
-	setValue: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function GroupButton(props: GroupButtonProps) {
-	const onClickButton = (i: number) => {
-		props.setValue(i);
-	};
 
 	return (
 		<div
 			className='GroupButtonContainerDiv'
 			style={{ width: props.width, height: props.height }}>
-			{props.labels.map((label, i) => (
-				<div className='GroupButtonInnerContainerDiv'>
+			{props.buttonsProps.map((btnProps, i) => (
+				<div key={i} className='GroupButtonInnerContainerDiv'>
 					<div
 						className='GroupButtonInnerDiv'
 						style={{
 							background:
-								i === props.value
+								btnProps.value === props.value
 									? props.selectedColor ?? '#d7d7d7'
 									: 'none',
 						}}
-						onClick={() => onClickButton(i)}>
-						{label}
+						onClick={() => btnProps.onClick(btnProps.value)}>
+						{btnProps.label}
 					</div>
-					{i < props.labels.length - 1 && (
+					{i < props.buttonsProps.length - 1 && (
 						<div className='GroupButtonLineDiv' />
 					)}
 				</div>
