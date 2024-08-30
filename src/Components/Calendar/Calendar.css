@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.CalendarContainerDiv {
+	border: solid 1px #d7d7d7;
+	width: 240px;
+	height: fit-content;
+	padding: 12px;
+	padding-bottom: 15px;
+	/* font-family: 'Inter'; */
+}
+
+.CalendarUpperDiv {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 6px;
+}
+
+.CalendarMonthSpan {
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.CalendarYearSpan {
+	font-size: 12px;
+	padding-left: 6px;
+}
+
+.CalendarArrowDiv {
+	display: flex;
+}
+
+.CalendarWeekParentDiv {
+	display: flex;
+	justify-content: space-around;
+	padding-top: 9px;
+}
+
+.CalendarWeekSpan {
+	font-size: 12px;
+	font-weight: 600;
+	width: 24px;
+	text-align: center;
+}
+
+.CalendarDaySpan {
+	font-size: 12px;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.CalendarDaySpanDis {
+	color: #d7d7d7;
+	cursor: default;
+}
+
+.CalendarDaySelectedSpan {
+	background: #B9E6FF;
+	border-radius: 100px;
+}
