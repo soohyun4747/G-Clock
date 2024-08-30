@@ -1,0 +1,59 @@
+.TimeSelectorContainerDiv {
+	display: flex;
+	width: 90px;
+	height: fit-content;
+	position: relative;
+}
+
+.TimeSelectorGroupDiv {
+	flex: 1;
+	height: 150px;
+	overflow-y: scroll;
+}
+
+.TimeSelectorGroupDiv::-webkit-scrollbar {
+	display: none;
+}
+
+.TimeSelectorLabelDiv {
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.TimeSelectorSelectionDiv {
+	width: 90px;
+	height: 30px;
+	background-color: #e9e8e8;
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	bottom: 0;
+	margin: auto 0;
+}
+
+.TimeSelectorOpacityDiv {
+	width: 90px;
+	height: 60px;
+	position: absolute;
+	pointer-events: none;
+}
+
+.TimeSelectorOpacityDiv1 {
+	background: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 1),
+		rgba(255, 255, 255, 0.6)
+	);
+	top: 0;
+}
+
+.TimeSelectorOpacityDiv2 {
+	background: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0.6),
+		rgba(255, 255, 255, 1)
+	);
+	bottom: 0;
+}
