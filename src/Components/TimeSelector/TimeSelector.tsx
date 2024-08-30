@@ -1,13 +1,12 @@
-import { hourArray, minArray, timeScrollValues } from 'lib/const';
+import { amPm, hourArray, minArray, timeScrollValues } from 'lib/const';
 import './TimeSelector.css';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { createTimeScrollDict, getCurrentMinInFiveMulti } from 'util/Time';
+import { SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
+import { createTimeScrollDict, getDateMinuteInFiveMulti } from 'util/Time';
+import { GroupButton } from 'Components/GroupButton/GroupButton';
 
 export interface TimeSelectorProps {
-	minute: number;
-	hour: number;
-	setMinute: React.Dispatch<React.SetStateAction<number>>;
-	setHour: React.Dispatch<React.SetStateAction<number>>;
+	date: Date;
+	setDate: React.Dispatch<SetStateAction<Date>>;
 }
 
 export function TimeSelector(props: TimeSelectorProps) {
@@ -19,29 +18,38 @@ export function TimeSelector(props: TimeSelectorProps) {
 	const timeScrollDict = useMemo(() => createTimeScrollDict(), []);
 
 	useEffect(() => {
-		setStateMinuteAndScroll();
-	}, [props.minute]);
+		setStateHourAndScroll(props.date);
+		setStateMinuteAndScroll(props.date);
+	}, [props.date]);
 
-	useEffect(() => {
-		setStateHourAndScroll();
-	}, [props.hour]);
+	const setStateMinuteAndScroll = (date: Date) => {
+		const dateMinutes = getDateMinuteInFiveMulti(date);
 
-	const setStateMinuteAndScroll = () => {
 		const scrollVal = timeScrollValues.find(
-			(timeScroll) => timeScroll.time.minute === props.minute
+			(timeScroll) => timeScroll.time.minute === dateMinutes
 		)?.value;
+
 		if (scrollVal !== undefined) {
 			minuteScrollTo(scrollVal);
 		}
 	};
 
-	const setStateHourAndScroll = () => {
+	const setStateHourAndScroll = (date: Date) => {
+		const dateHours = getDateHours(date);
 		const scrollVal = timeScrollValues.find(
-			(timeScroll) => timeScroll.time.hour === props.hour
+			(timeScroll) => timeScroll.time.hour === dateHours
 		)?.value;
 		if (scrollVal !== undefined) {
 			hourScrollTo(scrollVal);
 		}
+	};
+
+	const getDateHours = (date: Date) => {
+		const hours = date.getHours();
+		if (hours > 12) {
+			return hours - 12;
+		}
+		return hours;
 	};
 
 	const minuteScrollTo = (value: number) => {
@@ -72,45 +80,75 @@ export function TimeSelector(props: TimeSelectorProps) {
 			const { scrollTop } = hourDivRef.current;
 			const scrollDict = timeScrollDict[scrollTop];
 			hourScrollTo(scrollDict.value);
-			props.setHour(scrollDict.time.hour);
+			props.setDate((prev) => {
+				if (getAmOrPm(prev) === amPm.pm) {
+					return new Date(prev.setHours(scrollDict.time.hour + 12));
+				}
+				return new Date(prev.setHours(scrollDict.time.hour));
+			});
 		}
 
 		if (minDivRef.current) {
 			const { scrollTop } = minDivRef.current;
 			const scrollDict = timeScrollDict[scrollTop];
 			minuteScrollTo(scrollDict.value);
-			props.setMinute(scrollDict.time.minute);
+			props.setDate(
+				(prev) => new Date(prev.setMinutes(scrollDict.time.minute))
+			);
+		}
+	};
+
+	const getAmOrPm = (date: Date) => {
+		if (date.getHours() <= 12) {
+			return amPm.am;
+		} else {
+			return amPm.pm;
+		}
+	};
+
+	const onClickAmPm = (value: string | number) => {
+		if (value === amPm.pm) {
+			props.setDate((prev) => new Date(prev.getHours() + 12));
 		}
 	};
 
 	return (
-		<div className='TimeSelectorContainerDiv'>
-			<div className='TimeSelectorSelectionDiv' />
-			<div className='TimeSelectorOpacityDiv TimeSelectorOpacityDiv1' />
-			<div className='TimeSelectorOpacityDiv TimeSelectorOpacityDiv2' />
-			<div
-				className='TimeSelectorGroupDiv'
-				ref={hourDivRef}
-				onScroll={handleScroll}>
-				{hourArray.map((hour, i) => (
-					<div
-						className='TimeSelectorLabelDiv'
-						key={i}>
-						{hour.label}
-					</div>
-				))}
-			</div>
-			<div
-				className='TimeSelectorGroupDiv'
-				ref={minDivRef}
-				onScroll={handleScroll}>
-				{minArray.map((min, i) => (
-					<div
-						key={i}
-						className='TimeSelectorLabelDiv'>
-						{min.label}
-					</div>
-				))}
+		<div>
+			<GroupButton
+				value={getAmOrPm(props.date)}
+				buttonsProps={[
+					{ label: 'am', value: amPm.am, onClick: onClickAmPm },
+					{ label: 'pm', value: amPm.pm, onClick: onClickAmPm },
+				]}
+			/>
+			<div className='TimeSelectorContainerDiv'>
+				<div className='TimeSelectorSelectionDiv' />
+				<div className='TimeSelectorOpacityDiv TimeSelectorOpacityDiv1' />
+				<div className='TimeSelectorOpacityDiv TimeSelectorOpacityDiv2' />
+				<div
+					className='TimeSelectorGroupDiv'
+					ref={hourDivRef}
+					onScroll={handleScroll}>
+					{hourArray.map((hour, i) => (
+						<div
+							className='TimeSelectorLabelDiv'
+							key={i}>
+							{hour.label}
+						</div>
+					))}
+				</div>
+				<div
+					className='TimeSelectorGroupDiv'
+					ref={minDivRef}
+					onScroll={handleScroll}>
+					{minArray.map((min, i) => (
+						<div
+							key={i}
+							className='TimeSelectorLabelDiv'>
+							{min.label}
+						</div>
+					))}
+				</div>
 			</div>
 		</div>
 	);

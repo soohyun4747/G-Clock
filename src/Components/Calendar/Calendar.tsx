@@ -5,21 +5,18 @@ import { IconButton } from 'Components/IconButton/IconButtons';
 import { useEffect, useState } from 'react';
 import { getDatesInMonth } from 'util/Calendar';
 import { months } from 'lib/const';
+import { DateTimePickerProps } from 'Components/DateTimePicker/DateTimePicker';
 
 interface YearMonth {
 	year: number;
 	month: number;
 }
 
-interface CalendarProps {
-	date?: Date;
-}
-
-export function Calendar(props: CalendarProps) {
-	const [date, setDate] = useState<Date>(new Date());
+export function Calendar(props: DateTimePickerProps) {
+	// const [date, setDate] = useState<Date>(new Date());
 	const [yearMonth, setYearMonth] = useState<YearMonth>({
-		year: date.getFullYear(),
-		month: date.getMonth(),
+		year: new Date().getFullYear(),
+		month: new Date().getMonth(),
 	});
 	const [datesArray, setDatesArray] = useState<Date[][]>(
 		getDatesInMonth(yearMonth.year, yearMonth.month)
@@ -35,7 +32,7 @@ export function Calendar(props: CalendarProps) {
 
 	const setDateWithProps = () => {
 		if (props.date) {
-			setDate(props.date);
+			// setDate(props.date);
 			setYearMonth({
 				year: props.date.getFullYear(),
 				month: props.date.getMonth(),
@@ -47,7 +44,7 @@ export function Calendar(props: CalendarProps) {
 	};
 
 	const onClickDate = (currentDate: Date) => {
-		setDate(currentDate);
+		props.setDate(currentDate);
 	};
 
 	const onClickMonthBefore = () => {
@@ -109,8 +106,8 @@ export function Calendar(props: CalendarProps) {
 						{dates.map((d, j) => {
 							if (d.getMonth() === yearMonth.month) {
 								if (
-									d.getMonth() === date.getMonth() &&
-									d.getDate() === date.getDate()
+									d.getMonth() === props.date.getMonth() &&
+									d.getDate() === props.date.getDate()
 								) {
 									return (
 										<span

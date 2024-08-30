@@ -56,72 +56,77 @@ export const timeScrollValues = [
 		min: 0,
 		max: 14,
 		value: 0,
-		time: {minute: 0, hour: 1}
+		time: { minute: 0, hour: 1 },
 	},
 	{
 		min: 15,
 		max: 44,
 		value: 30,
-		time: {minute: 5, hour: 2}
+		time: { minute: 5, hour: 2 },
 	},
 	{
 		min: 45,
 		max: 74,
 		value: 60,
-		time: {minute: 10, hour: 3}
+		time: { minute: 10, hour: 3 },
 	},
 	{
 		min: 75,
 		max: 104,
 		value: 90,
-		time: {minute: 15, hour: 4}
+		time: { minute: 15, hour: 4 },
 	},
 	{
 		min: 105,
 		max: 134,
 		value: 120,
-		time: {minute: 20, hour: 5}
+		time: { minute: 20, hour: 5 },
 	},
 	{
 		min: 135,
 		max: 164,
 		value: 150,
-		time: {minute: 25, hour: 6}
+		time: { minute: 25, hour: 6 },
 	},
 	{
 		min: 165,
 		max: 194,
 		value: 180,
-		time: {minute: 30, hour: 7}
+		time: { minute: 30, hour: 7 },
 	},
 	{
 		min: 195,
 		max: 224,
 		value: 210,
-		time: {minute: 35, hour: 8}
+		time: { minute: 35, hour: 8 },
 	},
 	{
 		min: 225,
 		max: 254,
 		value: 240,
-		time: {minute: 40, hour: 9}
+		time: { minute: 40, hour: 9 },
 	},
 	{
 		min: 255,
 		max: 284,
 		value: 270,
-		time: {minute: 45, hour: 10}
+		time: { minute: 45, hour: 10 },
 	},
 	{
 		min: 285,
 		max: 314,
 		value: 300,
-		time: {minute: 50, hour: 11}
+		time: { minute: 50, hour: 11 },
 	},
 	{
 		min: 315,
 		max: 330,
 		value: 330,
-		time: {minute: 55, hour: 12}
+		time: { minute: 55, hour: 12 },
 	},
 ];
+
+export const amPm = {
+	am: 'am',
+	pm: 'pm',
+};
