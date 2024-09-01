@@ -1,0 +1,47 @@
+.DateTimePickerParentDiv {
+	display: flex;
+}
+
+/* Hide the calendar icon in most browsers */
+input[type='datetime-local'] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	position: relative;
+}
+
+/* Hide the calendar icon in WebKit browsers */
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+	display: none;
+}
+
+
+input:focus {
+	border: none;
+	outline: none;
+}
+
+.DateTimePickerInput {
+	border: none;
+    padding-left: 6px;
+}
+
+.DateTimePickerInputDiv {
+    padding: 9px;
+    padding-right: 0px;
+    border: solid 1px black;
+    width: fit-content;
+}
+
+.DateTimePickerCalendarTimeSelectorDiv {
+    padding: 12px;
+	justify-content: space-between;
+    width: 345px;
+    border: solid 1px #d7d7d7;
+    margin-top: 6px;
+}
+
+.DateTimePickerLabelDiv {
+    font-size: 12px;
+    padding-bottom: 3px;
+}
