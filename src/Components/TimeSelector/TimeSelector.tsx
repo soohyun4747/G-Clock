@@ -1,15 +1,11 @@
 import { amPm, hourArray, minArray, timeScrollValues } from 'lib/const';
 import './TimeSelector.css';
-import { SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createTimeScrollDict, getDateMinuteInFiveMulti } from 'util/Time';
 import { GroupButton } from 'Components/GroupButton/GroupButton';
+import { DateTimePickerProps } from 'Components/DateTimePicker/DateTimePicker';
 
-export interface TimeSelectorProps {
-	date: Date;
-	setDate: React.Dispatch<SetStateAction<Date>>;
-}
-
-export function TimeSelector(props: TimeSelectorProps) {
+export function TimeSelector(props: DateTimePickerProps) {
 	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
 
 	const hourDivRef = useRef<HTMLDivElement>(null);
@@ -23,14 +19,27 @@ export function TimeSelector(props: TimeSelectorProps) {
 	}, [props.date]);
 
 	const setStateMinuteAndScroll = (date: Date) => {
-		const dateMinutes = getDateMinuteInFiveMulti(date);
+		const dateMinutesInFiveMulti = getDateMinuteInFiveMulti(date);
 
 		const scrollVal = timeScrollValues.find(
-			(timeScroll) => timeScroll.time.minute === dateMinutes
+			(timeScroll) => timeScroll.time.minute === dateMinutesInFiveMulti
 		)?.value;
 
 		if (scrollVal !== undefined) {
 			minuteScrollTo(scrollVal);
+
+			if (props.date.getMinutes() !== dateMinutesInFiveMulti) {
+				props.setDate(
+					new Date(date.setMinutes(dateMinutesInFiveMulti))
+				);
+			}
+		}
+
+		//when minute is 58-59
+		else {
+			minuteScrollTo(0);
+			const newDate = new Date(date.setMinutes(0));
+			props.setDate(new Date(newDate.setHours(newDate.getHours() + 1)));
 		}
 	};
 
@@ -108,7 +117,13 @@ export function TimeSelector(props: TimeSelectorProps) {
 
 	const onClickAmPm = (value: string | number) => {
 		if (value === amPm.pm) {
-			props.setDate((prev) => new Date(prev.getHours() + 12));
+			props.setDate(
+				(prev) => new Date(prev.setHours(prev.getHours() + 12))
+			);
+		} else {
+			props.setDate(
+				(prev) => new Date(prev.setHours(prev.getHours() - 12))
+			);
 		}
 	};
 

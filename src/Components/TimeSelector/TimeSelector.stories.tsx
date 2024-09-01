@@ -1,17 +1,14 @@
 import { Story } from '@storybook/react';
-import { TimeSelector, TimeSelectorProps } from './TimeSelector';
-import { SetStateAction, useState } from 'react';
-import { amPm } from 'lib/const';
+import { TimeSelector,  } from './TimeSelector';
+import { useState } from 'react';
+import { DateTimePickerProps } from 'Components/DateTimePicker/DateTimePicker';
 
 export default {
 	component: TimeSelector,
 	title: 'TimeSelector',
 };
 
-const Template = (args: TimeSelectorProps) => {
-	// const [minute, setMinute] = useState<number>(args.minute);
-	// const [hour, setHour] = useState<number>(args.hour);
-	// const [amOrPm, setAmOrPm] = useState<string | number>(amPm.am);
+const Template = (args: DateTimePickerProps) => {
 	const [date, setDate] = useState<Date>(args.date);
 
 	return (
@@ -22,7 +19,7 @@ const Template = (args: TimeSelectorProps) => {
 	);
 };
 
-export const Default: Story<TimeSelectorProps> = Template.bind({});
+export const Default: Story<DateTimePickerProps> = Template.bind({});
 
 Default.args = {
 	date: new Date(),

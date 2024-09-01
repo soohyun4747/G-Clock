@@ -54,74 +54,74 @@ export const hourArray = [
 export const timeScrollValues = [
 	{
 		min: 0,
-		max: 14,
+		max: 18,
 		value: 0,
 		time: { minute: 0, hour: 1 },
 	},
 	{
-		min: 15,
-		max: 44,
-		value: 30,
+		min: 19,
+		max: 55,
+		value: 36,
 		time: { minute: 5, hour: 2 },
 	},
 	{
-		min: 45,
-		max: 74,
-		value: 60,
+		min: 56,
+		max: 92,
+		value: 72,
 		time: { minute: 10, hour: 3 },
 	},
 	{
-		min: 75,
-		max: 104,
-		value: 90,
+		min: 93,
+		max: 129,
+		value: 108,
 		time: { minute: 15, hour: 4 },
 	},
 	{
-		min: 105,
-		max: 134,
-		value: 120,
+		min: 130,
+		max: 166,
+		value: 144,
 		time: { minute: 20, hour: 5 },
 	},
 	{
-		min: 135,
-		max: 164,
-		value: 150,
+		min: 167,
+		max: 203,
+		value: 180,
 		time: { minute: 25, hour: 6 },
 	},
 	{
-		min: 165,
-		max: 194,
-		value: 180,
+		min: 204,
+		max: 240,
+		value: 216,
 		time: { minute: 30, hour: 7 },
 	},
 	{
-		min: 195,
-		max: 224,
-		value: 210,
+		min: 241,
+		max: 277,
+		value: 252,
 		time: { minute: 35, hour: 8 },
 	},
 	{
-		min: 225,
-		max: 254,
-		value: 240,
+		min: 278,
+		max: 314,
+		value: 288,
 		time: { minute: 40, hour: 9 },
 	},
 	{
-		min: 255,
-		max: 284,
-		value: 270,
+		min: 315,
+		max: 351,
+		value: 324,
 		time: { minute: 45, hour: 10 },
 	},
 	{
-		min: 285,
-		max: 314,
-		value: 300,
+		min: 352,
+		max: 388,
+		value: 360,
 		time: { minute: 50, hour: 11 },
 	},
 	{
-		min: 315,
-		max: 330,
-		value: 330,
+		min: 389,
+		max: 425,
+		value: 396,
 		time: { minute: 55, hour: 12 },
 	},
 ];
@@ -130,3 +130,9 @@ export const amPm = {
 	am: 'am',
 	pm: 'pm',
 };
+
+export const minDate = '1000-01-01';
+export const maxDate = '9999-12-31';
+
+export const minDateTime = new Date(minDate).getTime();
+export const maxDateTime = new Date(maxDate).getTime();

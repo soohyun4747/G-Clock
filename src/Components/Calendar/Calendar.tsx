@@ -44,7 +44,13 @@ export function Calendar(props: DateTimePickerProps) {
 	};
 
 	const onClickDate = (currentDate: Date) => {
-		props.setDate(currentDate);
+		props.setDate((prev) => {
+			let newDate = new Date(prev.setFullYear(currentDate.getFullYear()));
+			newDate = new Date(prev.setMonth(currentDate.getMonth()));
+			newDate = new Date(prev.setDate(currentDate.getDate()));
+
+			return newDate
+		});
 	};
 
 	const onClickMonthBefore = () => {
@@ -66,8 +72,6 @@ export function Calendar(props: DateTimePickerProps) {
 			}
 		});
 	};
-
-	console.log(datesArray);
 
 	return (
 		<div className='CalendarContainerDiv'>
