@@ -40,3 +40,8 @@ input:focus {
     border: solid 1px #d7d7d7;
     margin-top: 6px;
 }
+
+.DateTimePickerLabelDiv {
+    font-size: 12px;
+    padding-bottom: 3px;
+}

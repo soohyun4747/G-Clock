@@ -1,8 +1,8 @@
-import { LeftArrow } from 'Icons/LeftArrow/LeftArrow';
-import { RightArrow } from 'Icons/RightArrow/RightArrow';
+import { LeftArrow } from 'Icons/LeftArrow';
+import { RightArrow } from 'Icons/RightArrow';
 import './Calendar.css';
 import { IconButton } from 'Components/IconButton/IconButtons';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { getDatesInMonth } from 'util/Calendar';
 import { months } from 'lib/const';
 import { DateTimePickerProps } from 'Components/DateTimePicker/DateTimePicker';
@@ -12,7 +12,12 @@ interface YearMonth {
 	month: number;
 }
 
-export function Calendar(props: DateTimePickerProps) {
+export interface CalendarProps {
+	date: Date;
+	setDate: React.Dispatch<SetStateAction<Date>>;
+}
+
+export function Calendar(props: CalendarProps) {
 	// const [date, setDate] = useState<Date>(new Date());
 	const [yearMonth, setYearMonth] = useState<YearMonth>({
 		year: new Date().getFullYear(),
@@ -49,7 +54,7 @@ export function Calendar(props: DateTimePickerProps) {
 			newDate = new Date(prev.setMonth(currentDate.getMonth()));
 			newDate = new Date(prev.setDate(currentDate.getDate()));
 
-			return newDate
+			return newDate;
 		});
 	};
 

@@ -1,11 +1,17 @@
 import { amPm, hourArray, minArray, timeScrollValues } from 'lib/const';
 import './TimeSelector.css';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import { createTimeScrollDict, getDateMinuteInFiveMulti } from 'util/Time';
 import { GroupButton } from 'Components/GroupButton/GroupButton';
 import { DateTimePickerProps } from 'Components/DateTimePicker/DateTimePicker';
 
-export function TimeSelector(props: DateTimePickerProps) {
+
+export interface TimeSelectorProps {
+	date: Date;
+	setDate: React.Dispatch<SetStateAction<Date>>;
+}
+
+export function TimeSelector(props: TimeSelectorProps) {
 	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
 
 	const hourDivRef = useRef<HTMLDivElement>(null);

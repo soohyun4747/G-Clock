@@ -9,6 +9,7 @@ import { IconButton } from 'Components/IconButton/IconButtons';
 const calendarDivId = 'calendarDiv';
 
 export interface DateTimePickerProps {
+	label?: string;
 	date: Date;
 	setDate: React.Dispatch<SetStateAction<Date>>;
 }
@@ -95,6 +96,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
 
 	return (
 		<div>
+			{props.label && <div className='DateTimePickerLabelDiv'>{props.label}</div>}
 			<div
 				ref={inputContainerRef}
 				className='DateTimePickerParentDiv DateTimePickerInputDiv'>

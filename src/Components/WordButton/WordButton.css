@@ -1,0 +1,18 @@
+.WordsButtonContainerDiv {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	padding: 6px;
+	border: solid 1px #14aaff;
+	color: #14aaff;
+	width: fit-content;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.WordsButtonConainerDiv:hover {
+	background: #14aaff;
+	color: white;
+}

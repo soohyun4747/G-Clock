@@ -1,4 +1,4 @@
-import { LeftArrow } from "Icons/LeftArrow/LeftArrow"
+import { LeftArrow } from "Icons/LeftArrow"
 import { IconButton } from "./IconButtons"
 
 export default {

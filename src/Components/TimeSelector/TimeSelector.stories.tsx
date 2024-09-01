@@ -1,5 +1,5 @@
 import { Story } from '@storybook/react';
-import { TimeSelector,  } from './TimeSelector';
+import { TimeSelector, TimeSelectorProps,  } from './TimeSelector';
 import { useState } from 'react';
 import { DateTimePickerProps } from 'Components/DateTimePicker/DateTimePicker';
 
@@ -8,7 +8,7 @@ export default {
 	title: 'TimeSelector',
 };
 
-const Template = (args: DateTimePickerProps) => {
+const Template = (args: TimeSelectorProps) => {
 	const [date, setDate] = useState<Date>(args.date);
 
 	return (
