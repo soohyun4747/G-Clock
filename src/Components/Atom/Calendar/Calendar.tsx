@@ -1,11 +1,11 @@
 import { LeftArrow } from 'Icons/LeftArrow';
 import { RightArrow } from 'Icons/RightArrow';
 import './Calendar.css';
-import { IconButton } from 'Components/IconButton/IconButtons';
+import { IconButton } from 'Components/Atom/IconButton/IconButtons';
 import { SetStateAction, useEffect, useState } from 'react';
 import { getDatesInMonth } from 'util/Calendar';
 import { months } from 'lib/const';
-import { DateTimePickerProps } from 'Components/DateTimePicker/DateTimePicker';
+import { DateTimePickerProps } from 'Components/Molecule/DateTimePicker/DateTimePicker';
 
 interface YearMonth {
 	year: number;
@@ -14,11 +14,11 @@ interface YearMonth {
 
 export interface CalendarProps {
 	date: Date;
-	setDate: React.Dispatch<SetStateAction<Date>>;
+	// setDate: React.Dispatch<SetStateAction<Date>>;
+	onChangeDate: (date: Date) => void;
 }
 
 export function Calendar(props: CalendarProps) {
-	// const [date, setDate] = useState<Date>(new Date());
 	const [yearMonth, setYearMonth] = useState<YearMonth>({
 		year: new Date().getFullYear(),
 		month: new Date().getMonth(),
@@ -49,13 +49,18 @@ export function Calendar(props: CalendarProps) {
 	};
 
 	const onClickDate = (currentDate: Date) => {
-		props.setDate((prev) => {
-			let newDate = new Date(prev.setFullYear(currentDate.getFullYear()));
-			newDate = new Date(prev.setMonth(currentDate.getMonth()));
-			newDate = new Date(prev.setDate(currentDate.getDate()));
+		let newDate = new Date(props.date.setFullYear(currentDate.getFullYear()));
+		newDate = new Date(props.date.setMonth(currentDate.getMonth()));
+		newDate = new Date(props.date.setDate(currentDate.getDate()));
 
-			return newDate;
-		});
+		props.onChangeDate(props.date)
+		// props.setDate((prev) => {
+		// 	let newDate = new Date(prev.setFullYear(currentDate.getFullYear()));
+		// 	newDate = new Date(prev.setMonth(currentDate.getMonth()));
+		// 	newDate = new Date(prev.setDate(currentDate.getDate()));
+
+		// 	return newDate;
+		// });
 	};
 
 	const onClickMonthBefore = () => {

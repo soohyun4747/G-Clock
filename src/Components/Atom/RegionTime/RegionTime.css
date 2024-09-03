@@ -1,0 +1,50 @@
+.RegionTimeContainerDiv {
+	border: solid 1px #b2b2b2;
+	box-sizing: border-box;
+	padding: 9px;
+	padding-left: 12px;
+	padding-right: 12px;
+	display: flex;
+	width: 350px;
+	align-items: center;
+}
+
+.RegionTimeStateCountryDiv {
+	flex: 1;
+}
+
+.RegionTimeStateGroupDiv {
+	display: flex;
+	align-items: center;
+}
+
+.RegionTimeStateDiv {
+	padding-right: 6px;
+	font-size: 18px;
+	font-weight: 900;
+}
+
+.RegionTimeTimeDiv {
+	font-size: 15px;
+	font-weight: 900;
+}
+
+.RegionTimeCountryDateDiv {
+	padding-top: 3px;
+	font-size: 12px;
+}
+
+.RegionTimeLineDiv {
+	padding: 9px;
+	align-self: flex-start;
+	padding-top: 2px;
+}
+
+.RegionTimeDiffHomeDiv {
+	opacity: 0.3;
+}
+
+.RegionTimeDiffDiv {
+    font-size: 15px;
+    font-weight: 900;
+}

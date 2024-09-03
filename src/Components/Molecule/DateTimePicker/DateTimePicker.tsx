@@ -1,17 +1,19 @@
-import { Calendar } from 'Components/Calendar/Calendar';
-import { TimeSelector } from 'Components/TimeSelector/TimeSelector';
+import { Calendar } from 'Components/Atom/Calendar/Calendar';
+import { TimeSelector } from 'Components/Molecule/TimeSelector/TimeSelector';
 import { CalendarIcon } from 'Icons/Calendar';
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 import './DateTimePicker.css';
 import { maxDate, maxDateTime, minDate, minDateTime } from 'lib/const';
-import { IconButton } from 'Components/IconButton/IconButtons';
+import { IconButton } from 'Components/Atom/IconButton/IconButtons';
+import { dayHourMinuteToStrFormat } from 'util/Time';
 
 const calendarDivId = 'calendarDiv';
 
 export interface DateTimePickerProps {
 	label?: string;
+	style?: React.CSSProperties;
 	date: Date;
-	setDate: React.Dispatch<SetStateAction<Date>>;
+	onChangeDate: (date: Date) => void;
 }
 
 export function DateTimePicker(props: DateTimePickerProps) {
@@ -64,14 +66,6 @@ export function DateTimePicker(props: DateTimePickerProps) {
 		}
 	};
 
-	const dayHourMinuteToStrFormat = (value: number) => {
-		if (value.toString().length === 1) {
-			return `0${value}`;
-		} else {
-			return value;
-		}
-	};
-
 	const onChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setDateStr(event.target.value);
 	};
@@ -84,7 +78,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
 			minDateTime <= dateValueTime &&
 			dateValueTime <= maxDateTime
 		) {
-			props.setDate(dateValue!);
+			props.onChangeDate(dateValue!);
 		} else {
 			setDateStr(dateToStrFormat(props.date));
 		}
@@ -96,8 +90,11 @@ export function DateTimePicker(props: DateTimePickerProps) {
 
 	return (
 		<div>
-			{props.label && <div className='DateTimePickerLabelDiv'>{props.label}</div>}
+			{props.label && (
+				<div className='DateTimePickerLabelDiv'>{props.label}</div>
+			)}
 			<div
+				style={props.style}
 				ref={inputContainerRef}
 				className='DateTimePickerParentDiv DateTimePickerInputDiv'>
 				<IconButton
@@ -122,11 +119,13 @@ export function DateTimePicker(props: DateTimePickerProps) {
 					id={calendarDivId}>
 					<Calendar
 						date={props.date}
-						setDate={props.setDate}
+						// setDate={props.setDate}
+						onChangeDate={props.onChangeDate}
 					/>
 					<TimeSelector
 						date={props.date}
-						setDate={props.setDate}
+						// setDate={props.setDate}
+						onChangeDate={props.onChangeDate}
 					/>
 				</div>
 			)}

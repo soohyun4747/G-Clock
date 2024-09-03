@@ -1,11 +1,19 @@
-import { Alert } from '@mui/material';
 import './PlaceSearcher.css';
-import { ICity, IState, State, City, Country } from 'country-state-city';
-import { useEffect, useState } from 'react';
-import { WordButton } from 'Components/WordButton/WordButton';
+import { State, Country } from 'country-state-city';
+import { useState } from 'react';
+import { WordButton } from 'Components/Atom/WordButton/WordButton';
+import {
+	AlertMessage,
+	AlertMessageProps,
+	AlertMessageSet,
+} from 'Components/Atom/AlertMessage/AlertMessage';
+import { getSimilarity } from 'util/String';
+import Fuse from 'fuse.js';
 
-export interface StateCity extends IState, ICity {
+export interface StateCity {
 	country: string;
+	name: string;
+	code: string;
 }
 
 export interface PlaceSearcherProps {
@@ -13,16 +21,21 @@ export interface PlaceSearcherProps {
 }
 
 export function PlaceSearcher(props: PlaceSearcherProps) {
-	const [statesCitiesList, setStatesCitiesList] = useState<StateCity[]>([]);
 	const [stateOrCity, setStateOrCity] = useState<string>('');
-	const [alertVisibility, setAlertVisibility] = useState<boolean>(false);
-
-	useEffect(() => {
-		setStatesCitiesList(getStatesCitiesList());
-	}, []);
+	const [alertInfo, setAlertInfo] = useState<AlertMessageProps>();
+	const [filteredStatesCitiesList, setFilteredStatesCitiesList] = useState<
+		StateCity[]
+	>([]);
 
 	const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setStateOrCity(event.target.value);
+
+		setFilteredStatesCitiesList(
+			fuse
+				.search(stateOrCity)
+				.slice(0, 5) // Take the top 5 results
+				.map((result) => result.item)
+		);
 	};
 
 	const onClickAdd = () => {
@@ -32,8 +45,11 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 		if (stateOrCityInfo) {
 			props.onAdd(stateOrCityInfo);
 		} else {
-			setAlertVisibility(true);
-			setTimeout(() => setAlertVisibility(false), 2000);
+			AlertMessageSet(
+				setAlertInfo,
+				'There is no such city or state',
+				'error'
+			);
 		}
 	};
 
@@ -45,7 +61,7 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 						type='text'
 						placeholder='search place'
 						className='PlaceSearcherInput'
-						list='dataList'
+						list='states-cities-list'
 						onChange={onChangeInput}
 						value={stateOrCity}
 					/>
@@ -56,45 +72,42 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 					onClick={onClickAdd}
 				/>
 			</div>
-			<datalist
-				id='dataList'
-				className='PlaceSearcherDataList'>
-				{statesCitiesList.map((stateOrCity, i) => (
+			<datalist id='states-cities-list'>
+				{filteredStatesCitiesList.map((stateOrCity, i) => (
 					<option
 						key={i}
 						value={stateOrCity.name}
-						label={`${stateOrCity.country}, ${stateOrCity.name}`}
-					/>
+						label={`${stateOrCity.country}, ${stateOrCity.name}`}></option>
 				))}
 			</datalist>
-			{alertVisibility && (
-				<Alert severity={'error'}>There is no such state or city</Alert>
-			)}
+			{alertInfo && <AlertMessage {...alertInfo} />}
 		</div>
 	);
 }
 
 const getStatesCitiesList = () => {
 	const statesList: any[] = State.getAllStates();
-	// const citiesList: any[] = City.getAllCities();
 
 	const listOfStatesAndCities: StateCity[] = [];
 
 	statesList.forEach((state) => {
 		const country = Country.getCountryByCode(state.countryCode);
 		if (country) {
-			state.country = country.name;
-			listOfStatesAndCities.push(state);
+			listOfStatesAndCities.push({
+				country: country.name,
+				name: state.name,
+				code: state.isoCode,
+			});
 		}
 	});
 
-	// citiesList.forEach((city) => {
-	// 	const country = Country.getCountryByCode(city.countryCode);
-	// 	if (country) {
-	// 		city.country = country.name;
-	// 		listOfStatesAndCities.push(city);
-	// 	}
-	// });
-
 	return listOfStatesAndCities;
 };
+
+const statesCitiesList = getStatesCitiesList();
+
+const fuse = new Fuse(statesCitiesList, {
+	includeScore: true,
+	keys: ['country', 'name'],
+	threshold: 0.3, // Adjust this threshold to control sensitivity
+});

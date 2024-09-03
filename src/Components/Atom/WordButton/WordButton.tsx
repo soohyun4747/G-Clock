@@ -9,7 +9,7 @@ export interface WordButtonProps {
 export function WordButton(props: WordButtonProps) {
 	return (
 		<div
-			className='WordsButtonContainerDiv'
+			className='WordButtonContainerDiv'
 			style={props.style}
 			onClick={props.onClick}>
 			{props.label}

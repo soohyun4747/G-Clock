@@ -1,0 +1,23 @@
+.HeaderContainerDiv {
+	padding: 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #14aaff;
+	width: 100vw;
+    position: fixed;
+}
+
+.HeaderLogoGroupDiv {
+	display: flex;
+	align-items: center;
+}
+
+.HeaderTitleDiv {
+	padding-left: 12px;
+}
+
+.HeaderTextDiv {
+	font-size: 16px;
+	font-weight: 600;
+}
