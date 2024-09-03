@@ -12,23 +12,32 @@ import './RegionTimeGroup.css';
 export interface RegionTimeGroupProps extends RegionTimeProps {
 	// setStartDate: React.Dispatch<SetStateAction<Date>>;
 	// setEndDate: React.Dispatch<SetStateAction<Date>>;
-	onChangeStartDate: (date: Date) => void;
-	onChangeEndDate: (date: Date) => void;
-	onClickHome: () => void;
-	onClickDelete: () => void;
+	index: number;
+	onChangeStartDate: (date: Date, index: number) => void;
+	onChangeEndDate: (date: Date, index: number) => void;
+	onClickHome: (index: number) => void;
+	onClickDelete: (index: number) => void;
 }
 
 export function RegionTimeGroup(props: RegionTimeGroupProps) {
+	const onChangeStartDate = (date: Date) => {
+		props.onChangeStartDate(date, props.index);
+	};
+
+    const onChangeEndDate = (date: Date) => {
+		props.onChangeEndDate(date, props.index);
+	};
+
 	return (
 		<div className='RegionTimeGroupContainerDiv'>
 			<div className='RegionTimeGroupIconsDiv'>
 				<IconButton
 					icon={<HomeIcon />}
-					onClick={props.onClickHome}
+					onClick={() => props.onClickHome(props.index)}
 				/>
 				<IconButton
 					icon={<CloseIcon />}
-					onClick={props.onClickDelete}
+					onClick={() => props.onClickDelete(props.index)}
 				/>
 			</div>
 			<RegionTime
@@ -42,13 +51,13 @@ export function RegionTimeGroup(props: RegionTimeGroupProps) {
 				date={props.startDate}
 				label='From'
 				// setDate={props.setStartDate}
-				onChangeDate={props.onChangeStartDate}
+				onChangeDate={onChangeStartDate}
 			/>
 			<DateTimePicker
 				date={props.endDate}
 				label='To'
 				// setDate={props.setEndDate}o
-				onChangeDate={props.onChangeEndDate}
+				onChangeDate={onChangeEndDate}
 			/>
 		</div>
 	);

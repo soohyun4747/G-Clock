@@ -32,6 +32,31 @@ export function TimeConverterTemplate() {
 		});
 	};
 
+	const onChangeStartDate = (date: Date, index: number) => {
+		setRegionTimeList((prev) => {
+			prev[index].startDate = date;
+			return [...prev];
+		});
+	};
+
+	const onChangeEndDate = (date: Date, index: number) => {
+		setRegionTimeList((prev) => {
+			prev[index].endDate = date;
+			return [...prev];
+		});
+	};
+
+	const onClickHome = (index: number) => {
+		setRegionTimeList((prev) => {
+			prev[index].homeTimeDiff = undefined;
+			return [...prev];
+		});
+	};
+
+	const onClickDelete = (index: number) => {
+		setRegionTimeList((prev) => prev.splice(index, 1));
+	};
+
 	return (
 		<div>
 			<Header />
@@ -50,23 +75,16 @@ export function TimeConverterTemplate() {
 				</div>
 			</div>
 			<div>
-				{regionTimeList.map((regionTime) => (
+				{regionTimeList.map((regionTime, i) => (
 					<RegionTimeGroup
-						onChangeStartDate={function (date: Date): void {
-							throw new Error('Function not implemented.');
-						}}
-						onChangeEndDate={function (date: Date): void {
-							throw new Error('Function not implemented.');
-						}}
-						onClickHome={function (): void {
-							throw new Error('Function not implemented.');
-						}}
-						onClickDelete={function (): void {
-							throw new Error('Function not implemented.');
-						}}
+						onChangeStartDate={onChangeStartDate}
+						onChangeEndDate={onChangeEndDate}
+						onClickHome={onClickHome}
+						onClickDelete={onClickDelete}
 						stateCity={regionTime.stateCity}
 						startDate={regionTime.startDate}
 						endDate={regionTime.endDate}
+						index={i}
 					/>
 				))}
 			</div>
