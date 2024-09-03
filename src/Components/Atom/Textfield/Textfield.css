@@ -1,0 +1,16 @@
+.TexfieldContainerDiv {
+	box-sizing: border-box;
+	border: solid #b2b2b2 1px;
+    padding: 6px;
+    width: fit-content;
+}
+
+.TextfieldInput {
+    border: none;
+	outline: none;
+}
+
+.TextfieldInput:focus {
+	border: none;
+	outline: none;
+}

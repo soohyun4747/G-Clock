@@ -2,13 +2,13 @@ import { amPm, hourArray, minArray, timeScrollValues } from 'lib/const';
 import './TimeSelector.css';
 import { SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import { createTimeScrollDict, getDateMinuteInFiveMulti } from 'util/Time';
-import { GroupButton } from 'Components/GroupButton/GroupButton';
-import { DateTimePickerProps } from 'Components/DateTimePicker/DateTimePicker';
-
+import { GroupButton } from 'Components/Atom/GroupButton/GroupButton';
+import { DateTimePickerProps } from 'Components/Molecule/DateTimePicker/DateTimePicker';
 
 export interface TimeSelectorProps {
 	date: Date;
-	setDate: React.Dispatch<SetStateAction<Date>>;
+	// setDate: React.Dispatch<SetStateAction<Date>>;
+	onChangeDate: (date: Date) => void;
 }
 
 export function TimeSelector(props: TimeSelectorProps) {
@@ -35,7 +35,7 @@ export function TimeSelector(props: TimeSelectorProps) {
 			minuteScrollTo(scrollVal);
 
 			if (props.date.getMinutes() !== dateMinutesInFiveMulti) {
-				props.setDate(
+				props.onChangeDate(
 					new Date(date.setMinutes(dateMinutesInFiveMulti))
 				);
 			}
@@ -45,7 +45,9 @@ export function TimeSelector(props: TimeSelectorProps) {
 		else {
 			minuteScrollTo(0);
 			const newDate = new Date(date.setMinutes(0));
-			props.setDate(new Date(newDate.setHours(newDate.getHours() + 1)));
+			props.onChangeDate(
+				new Date(newDate.setHours(newDate.getHours() + 1))
+			);
 		}
 	};
 
@@ -95,20 +97,31 @@ export function TimeSelector(props: TimeSelectorProps) {
 			const { scrollTop } = hourDivRef.current;
 			const scrollDict = timeScrollDict[scrollTop];
 			hourScrollTo(scrollDict.value);
-			props.setDate((prev) => {
-				if (getAmOrPm(prev) === amPm.pm) {
-					return new Date(prev.setHours(scrollDict.time.hour + 12));
-				}
-				return new Date(prev.setHours(scrollDict.time.hour));
-			});
+			// props.setDate((prev) => {
+			// 	if (getAmOrPm(prev) === amPm.pm) {
+			// 		return new Date(prev.setHours(scrollDict.time.hour + 12));
+			// 	}
+			// 	return new Date(prev.setHours(scrollDict.time.hour));
+			// });
+			if (getAmOrPm(props.date) === amPm.pm) {
+				props.onChangeDate(
+					new Date(props.date.setHours(scrollDict.time.hour + 12))
+				);
+			}
+			props.onChangeDate(
+				new Date(props.date.setHours(scrollDict.time.hour))
+			);
 		}
 
 		if (minDivRef.current) {
 			const { scrollTop } = minDivRef.current;
 			const scrollDict = timeScrollDict[scrollTop];
 			minuteScrollTo(scrollDict.value);
-			props.setDate(
-				(prev) => new Date(prev.setMinutes(scrollDict.time.minute))
+			// props.setDate(
+			// 	(prev) => new Date(prev.setMinutes(scrollDict.time.minute))
+			// );
+			props.onChangeDate(
+				new Date(props.date.setMinutes(scrollDict.time.minute))
 			);
 		}
 	};
@@ -123,13 +136,15 @@ export function TimeSelector(props: TimeSelectorProps) {
 
 	const onClickAmPm = (value: string | number) => {
 		if (value === amPm.pm) {
-			props.setDate(
-				(prev) => new Date(prev.setHours(prev.getHours() + 12))
-			);
+			// props.setDate(
+			// 	(prev) => new Date(prev.setHours(prev.getHours() + 12))
+			// );
+			props.onChangeDate(new Date(props.date.setHours(props.date.getHours() + 12)))
 		} else {
-			props.setDate(
-				(prev) => new Date(prev.setHours(prev.getHours() - 12))
-			);
+			// props.setDate(
+			// 	(prev) => new Date(prev.setHours(prev.getHours() - 12))
+			// );
+			props.onChangeDate(new Date(props.date.setHours(props.date.getHours()  - 12)))
 		}
 	};
 

@@ -24,12 +24,9 @@
 }
 
 .PlaceSearcherDataList {
-	height: 100px;
+	height: 600px;
 	position: absolute;
-	border: 0 none;
 	overflow-x: hidden;
 	overflow-y: auto;
 	left: 0;
-	background-color: white;
-	border: 1px solid blue;
 }

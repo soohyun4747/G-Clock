@@ -136,3 +136,9 @@ export const maxDate = '9999-12-31';
 
 export const minDateTime = new Date(minDate).getTime();
 export const maxDateTime = new Date(maxDate).getTime();
+
+export const timeUnit = {
+	sec: 'sec',
+	min: 'min',
+	hour: 'hour',
+};

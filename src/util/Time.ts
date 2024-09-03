@@ -35,3 +35,15 @@ export const getDateMinuteInFiveMulti = (date: Date) => {
 		return minutes + (5 - left);
 	}
 };
+
+export const dayHourMinuteToStrFormat = (value: number) => {
+	if (value.toString().length === 1) {
+		return `0${value}`;
+	} else {
+		return value;
+	}
+};
+
+export const dateAfter = (minutes: number) => {
+	return new Date(new Date().getTime() + minutes * 60000);
+};

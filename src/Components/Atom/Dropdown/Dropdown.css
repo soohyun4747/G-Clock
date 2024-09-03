@@ -1,0 +1,16 @@
+.DropdownContainerDiv {
+    padding: 6px;
+    border: solid #B2B2B2 1px;
+    width: fit-content;
+}
+
+.DropdownSelect {
+    padding-right: 6px;
+    border: none;
+    outline: none;
+}
+
+.DropdownSelect:focus {
+    border: none;
+    outline: none;
+}
