@@ -1,6 +1,7 @@
 import { Story } from '@storybook/react';
 import { RegionTime, RegionTimeProps } from './RegionTime';
 import { useState } from 'react';
+import { SeoulInfo } from 'lib/const';
 
 export default {
 	component: RegionTime,
@@ -14,8 +15,7 @@ const Template = (args: RegionTimeProps) => {
 export const Default: Story<RegionTimeProps> = Template.bind({});
 
 Default.args = {
-	stateCity: { country: 'South Korea', name: 'Seoul', code: 'SE' },
-    homeTimeDiff: 7,
+	stateCity: SeoulInfo,
     startDate: new Date(),
     endDate: new Date()
 };

@@ -6,6 +6,7 @@ import './DateTimePicker.css';
 import { maxDate, maxDateTime, minDate, minDateTime } from 'lib/const';
 import { IconButton } from 'Components/Atom/IconButton/IconButtons';
 import { dayHourMinuteToStrFormat } from 'util/Time';
+import { onEnterKeyDown } from 'util/Component';
 
 const calendarDivId = 'calendarDiv';
 
@@ -33,9 +34,10 @@ export function DateTimePicker(props: DateTimePickerProps) {
 		};
 	}, []);
 
-	useEffect(() => {
+	useEffect(() => {		
 		setDateStr(dateToStrFormat(props.date));
 	}, [props.date]);
+	
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (
@@ -88,6 +90,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
 		setCalendarVisible((prev) => !prev);
 	};
 
+	
 	return (
 		<div>
 			{props.label && (
@@ -110,6 +113,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
 					min={minDate}
 					max={maxDate}
 					onBlur={onBlurDate}
+					onKeyDown={onEnterKeyDown}
 				/>
 			</div>
 			{calendarVisible && (
@@ -119,12 +123,10 @@ export function DateTimePicker(props: DateTimePickerProps) {
 					id={calendarDivId}>
 					<Calendar
 						date={props.date}
-						// setDate={props.setDate}
 						onChangeDate={props.onChangeDate}
 					/>
 					<TimeSelector
 						date={props.date}
-						// setDate={props.setDate}
 						onChangeDate={props.onChangeDate}
 					/>
 				</div>

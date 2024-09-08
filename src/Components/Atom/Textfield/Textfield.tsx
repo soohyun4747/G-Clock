@@ -2,6 +2,7 @@ import './Textfield.css';
 
 export interface TextfieldProps {
 	style?: React.CSSProperties;
+	inputStyle?: React.CSSProperties;
 	value: string;
 	setValue: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -19,6 +20,7 @@ export function Textfield(props: TextfieldProps) {
 				className='TextfieldInput'
 				value={props.value}
 				onChange={onChangeInput}
+				style={props.inputStyle}
 			/>
 		</div>
 	);

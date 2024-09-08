@@ -3,13 +3,19 @@ import './RegionTime.css';
 import { StateCity } from 'Components/Molecule/PlaceSearcher/PlaceSearcher';
 import { dayHourMinuteToStrFormat } from 'util/Time';
 import { amPm } from 'lib/const';
+import { useEffect, useMemo } from 'react';
 
-export interface RegionTimeProps {
-	style?: React.CSSProperties;
+export interface IRegionTime {
 	stateCity: StateCity;
-	homeTimeDiff?: number;
+	regionTimeHome?: RegionTimeProps;
 	startDate: Date;
 	endDate: Date;
+	timezone: string;
+}
+
+export interface RegionTimeProps extends IRegionTime {
+	style?: React.CSSProperties;
+	homeTimeDiff?: number;
 }
 
 export function RegionTime(props: RegionTimeProps) {
@@ -20,7 +26,7 @@ export function RegionTime(props: RegionTimeProps) {
 		return diff.toString();
 	};
 
-	const getDateTimeStr = (date: Date) => {
+	const getDateTimeStr = (date: Date) => {		
 		const hours = getHourStrAmPm(date.getHours());
 		const minutes = dayHourMinuteToStrFormat(date.getMinutes());
 
@@ -29,32 +35,23 @@ export function RegionTime(props: RegionTimeProps) {
 
 	const getHourStrAmPm = (value: number) => {
 		if (value <= 12) {
-			const hourStr = dayHourMinuteToStrFormat(value);
 			return {
-				hour: hourStr,
+				hour: dayHourMinuteToStrFormat(value),
 				amPm: amPm.am,
 			};
 		} else {
 			return {
-				hour: value.toString(),
+				hour: dayHourMinuteToStrFormat(value - 12),
 				amPm: amPm.pm,
 			};
 		}
 	};
 
 	const getDateStr = (date: Date) => {
-		console.log({date});
-		
 		const [dayOfWeek, month, day] = date.toDateString().split(' ');
-
-		console.log({dayOfWeek, month, day});
-		
 
 		return `${dayOfWeek}, ${month} ${day}`;
 	};
-
-	console.log(props.endDate);
-	
 
 	return (
 		<div
@@ -65,15 +62,18 @@ export function RegionTime(props: RegionTimeProps) {
 					<div className='RegionTimeStateDiv'>
 						{props.stateCity.name}
 					</div>
-					<div className='RegionTimeDiffHomeDiv'>
-						{props.homeTimeDiff !== undefined ? (
-							<div className='RegionTimeDiffDiv'>
-								{getHomeTimeDiffStr(props.homeTimeDiff)}
-							</div>
-						) : (
-							<HomeIcon />
-						)}
-					</div>
+					{props.homeTimeDiff !== undefined && (
+						<div className='RegionTimeDiffHomeDiv'>
+							{props.regionTimeHome!.stateCity.name ===
+							props.stateCity.name ? (
+								<HomeIcon />
+							) : (
+								<div className='RegionTimeDiffDiv'>
+									{getHomeTimeDiffStr(props.homeTimeDiff)}
+								</div>
+							)}
+						</div>
+					)}
 				</div>
 				<div className='RegionTimeCountryDateDiv'>
 					{props.stateCity.country}

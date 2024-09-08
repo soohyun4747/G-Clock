@@ -1,16 +1,18 @@
 import { HTMLAttributes } from 'react';
 import './IconButton.css';
 
-interface IconButtonProps extends HTMLAttributes<HTMLDivElement> {
+interface IconButtonProps extends HTMLAttributes<HTMLButtonElement> {
 	icon: JSX.Element;
+	disabled?: boolean;
 }
 
 export function IconButton(props: IconButtonProps) {
 	return (
-		<div
-			className='iconButtonDiv'
+		<button
+			className='iconButton'
+			disabled={props.disabled}
 			{...props}>
 			{props.icon}
-		</div>
+		</button>
 	);
 }

@@ -1,0 +1,70 @@
+.TimeConverterBodyFooterDiv {
+    overflow: auto;
+    height: calc(100vh - 60px);
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.TimeConverterTemplateBodyDiv {
+    padding: 60px;
+	padding-left: 240px;
+    padding-right: 270px;
+}
+
+.TimeConverterTemplatePlaceTimeDiv {
+	padding-left: 30px;
+	display: flex;
+}
+
+.TimeConverterTemplateTimeRangeGroupDiv {
+	display: flex;
+	width: 506px;
+	align-items: flex-end;
+    padding-left: 12px;
+}
+
+
+.TimeConverterTemplateTimeRangeDiv {
+	display: flex;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.TimeConverterTemplateAdvDiv {
+    margin-left: 30px;
+    margin-top: 45px;
+    margin-bottom: 45px;
+	height: 150px;
+    background-color: lightgray;
+}
+
+.TimeConverterTemplateDetailDiv {
+	padding-left: 30px;
+}
+
+.TimeConverterTemplateDetailsGroupDiv {
+	display: flex;
+	justify-content: space-between;
+	font-size: 12px;
+}
+
+.TimeConverterTemplateLeftRangeDiv {
+	height: 50%;
+	width: 100%;
+	border-left: solid 1px #b2b2b2;
+	border-top: solid 1px #b2b2b2;
+}
+
+.TimeConverterTemplateRightRangeDiv {
+	height: 50%;
+	width: 100%;
+	border-right: solid 1px #b2b2b2;
+	border-top: solid 1px #b2b2b2;
+}
+
+.TimeConverterTemplateRegionTimeDiv {
+    padding-top: 12px;
+}

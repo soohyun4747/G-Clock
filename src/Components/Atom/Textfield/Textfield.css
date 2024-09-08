@@ -6,6 +6,7 @@
 }
 
 .TextfieldInput {
+	width: -webkit-fill-available;
     border: none;
 	outline: none;
 }
