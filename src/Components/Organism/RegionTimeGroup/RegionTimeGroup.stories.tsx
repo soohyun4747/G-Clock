@@ -1,6 +1,7 @@
 import { Story } from '@storybook/react';
 import { RegionTimeGroup, RegionTimeGroupProps } from './RegionTimeGroup';
 import { useState } from 'react';
+import { SeoulInfo } from 'lib/const';
 
 export default {
 	component: RegionTimeGroup,
@@ -11,11 +12,11 @@ const Template = (args: RegionTimeGroupProps) => {
 	const [startDate, setStartDate] = useState<Date>(new Date());
 	const [endDate, setEndDate] = useState<Date>(new Date());
 
-    const onChangeStartDate = (date: Date) => {
+	const onChangeStartDate = (date: Date) => {
 		setStartDate(date);
 	};
-    
-    const onChangeEndDate = (date: Date) => {
+
+	const onChangeEndDate = (date: Date) => {
 		setEndDate(date);
 	};
 
@@ -33,5 +34,5 @@ const Template = (args: RegionTimeGroupProps) => {
 export const Default: Story<RegionTimeGroupProps> = Template.bind({});
 
 Default.args = {
-	stateCity: { country: 'South Korea', name: 'Seoul', code: 'SE' },
+	stateCity: SeoulInfo,
 };

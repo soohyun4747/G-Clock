@@ -6,6 +6,9 @@
 	background-color: #14aaff;
 	width: 100vw;
     position: fixed;
+    box-sizing: border-box;
+    color: white;
+	top: 0;
 }
 
 .HeaderLogoGroupDiv {
@@ -20,4 +23,8 @@
 .HeaderTextDiv {
 	font-size: 16px;
 	font-weight: 600;
+}
+
+.HeaderCusorPointer {
+	cursor: pointer;
 }

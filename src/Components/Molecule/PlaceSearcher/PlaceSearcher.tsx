@@ -1,6 +1,6 @@
 import './PlaceSearcher.css';
-import { State, Country } from 'country-state-city';
-import { useState } from 'react';
+import { State, Country, IState } from 'country-state-city';
+import { SetStateAction, useState } from 'react';
 import { WordButton } from 'Components/Atom/WordButton/WordButton';
 import {
 	AlertMessage,
@@ -13,16 +13,20 @@ import Fuse from 'fuse.js';
 export interface StateCity {
 	country: string;
 	name: string;
-	code: string;
+	// code: string;
+	latitude: number | undefined;
+	longitude: number | undefined;
 }
 
 export interface PlaceSearcherProps {
+	style?: React.CSSProperties;
 	onAdd: (stateCity: StateCity) => void;
+	setAlertInfo: React.Dispatch<SetStateAction<AlertMessageProps | undefined>>
 }
 
 export function PlaceSearcher(props: PlaceSearcherProps) {
 	const [stateOrCity, setStateOrCity] = useState<string>('');
-	const [alertInfo, setAlertInfo] = useState<AlertMessageProps>();
+	// const [alertInfo, setAlertInfo] = useState<AlertMessageProps>();
 	const [filteredStatesCitiesList, setFilteredStatesCitiesList] = useState<
 		StateCity[]
 	>([]);
@@ -46,7 +50,7 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 			props.onAdd(stateOrCityInfo);
 		} else {
 			AlertMessageSet(
-				setAlertInfo,
+				props.setAlertInfo,
 				'There is no such city or state',
 				'error'
 			);
@@ -54,24 +58,24 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 	};
 
 	return (
-		<div>
-			<div className='PlaceSearcherContainerDiv'>
-				<div className='PlaceSearcherInputDiv'>
-					<input
-						type='text'
-						placeholder='search place'
-						className='PlaceSearcherInput'
-						list='states-cities-list'
-						onChange={onChangeInput}
-						value={stateOrCity}
-					/>
-				</div>
-				<WordButton
-					label='Add'
-					style={{ height: 36, marginLeft: 6, width: 60, padding: 0 }}
-					onClick={onClickAdd}
+		<div
+			className='PlaceSearcherContainerDiv'
+			style={props.style}>
+			<div className='PlaceSearcherInputDiv'>
+				<input
+					type='text'
+					placeholder='search place'
+					className='PlaceSearcherInput'
+					list='states-cities-list'
+					onChange={onChangeInput}
+					value={stateOrCity}
 				/>
 			</div>
+			<WordButton
+				label='Add'
+				style={{ height: 36, marginLeft: 9, width: 60, padding: 0 }}
+				onClick={onClickAdd}
+			/>
 			<datalist id='states-cities-list'>
 				{filteredStatesCitiesList.map((stateOrCity, i) => (
 					<option
@@ -80,13 +84,13 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 						label={`${stateOrCity.country}, ${stateOrCity.name}`}></option>
 				))}
 			</datalist>
-			{alertInfo && <AlertMessage {...alertInfo} />}
+			{/* {alertInfo && <AlertMessage {...alertInfo} />} */}
 		</div>
 	);
 }
 
 const getStatesCitiesList = () => {
-	const statesList: any[] = State.getAllStates();
+	const statesList: IState[] = State.getAllStates();
 
 	const listOfStatesAndCities: StateCity[] = [];
 
@@ -96,7 +100,11 @@ const getStatesCitiesList = () => {
 			listOfStatesAndCities.push({
 				country: country.name,
 				name: state.name,
-				code: state.isoCode,
+				// code: state.isoCode,
+				latitude: state.latitude ? Number(state.latitude) : undefined,
+				longitude: state.longitude
+					? Number(state.longitude)
+					: undefined,
 			});
 		}
 	});

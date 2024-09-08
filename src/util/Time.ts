@@ -1,16 +1,17 @@
-import { timeScrollValues } from 'lib/const';
+import { TimeScroll, minuteScrollValues } from 'Components/Molecule/TimeSelector/TimeSelector';
+import moment from 'moment';
 
-interface ScrollTime {
-	minute: number;
-	hour: number;
-}
+// export interface ScrollTime {
+// 	minute: number;
+// 	hour: number | null;
+// }
 
 interface TimeScrollDict {
 	value: number;
-	time: ScrollTime;
+	time: number;
 }
 
-export const createTimeScrollDict = () => {
+export const createTimeScrollDict = (timeScrollValues: TimeScroll[]) => {
 	const timeScrollDict: { [key: number]: TimeScrollDict } = {};
 
 	timeScrollValues.forEach((timeScroll) => {
@@ -40,10 +41,46 @@ export const dayHourMinuteToStrFormat = (value: number) => {
 	if (value.toString().length === 1) {
 		return `0${value}`;
 	} else {
-		return value;
+		return value.toString();
 	}
 };
 
-export const dateAfter = (minutes: number) => {
-	return new Date(new Date().getTime() + minutes * 60000);
+export const dateAfter = (minutes: number, timeZone: string) => {
+	return moment.tz(new Date().getTime() + minutes * 60000, timeZone).toDate();
 };
+
+export const convertTimeZone = (
+	homeTimezone: string,
+	timezone: string,
+	homeDate: Date
+) => {
+	console.log(
+		moment
+			.tz(homeDate, homeTimezone)
+			.tz(timezone)
+			.format('YYYY-MM-DD HH:mm:ss')
+	);
+
+	return new Date(
+		moment
+			.tz(homeDate, homeTimezone)
+			.tz(timezone)
+			.format('YYYY-MM-DD HH:mm:ss')
+	);
+};
+
+export const calculateHourDifference = (homeTimezone: string, timezone: string) => {
+	// Get the current time in both time zones
+	const homeTime = moment.tz(homeTimezone);
+	const time = moment.tz(timezone);
+
+	// Calculate the difference in hours
+	
+	const diffInHours = time.utcOffset() / 60 - homeTime.utcOffset() / 60 ;
+
+	return diffInHours;
+};
+
+export const hoursToMilliseconds = (hours: number): number => {
+	return hours * 60 * 60 * 1000;
+  };

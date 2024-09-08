@@ -14,7 +14,6 @@ interface YearMonth {
 
 export interface CalendarProps {
 	date: Date;
-	// setDate: React.Dispatch<SetStateAction<Date>>;
 	onChangeDate: (date: Date) => void;
 }
 
@@ -37,7 +36,6 @@ export function Calendar(props: CalendarProps) {
 
 	const setDateWithProps = () => {
 		if (props.date) {
-			// setDate(props.date);
 			setYearMonth({
 				year: props.date.getFullYear(),
 				month: props.date.getMonth(),
@@ -48,19 +46,12 @@ export function Calendar(props: CalendarProps) {
 		}
 	};
 
-	const onClickDate = (currentDate: Date) => {
-		let newDate = new Date(props.date.setFullYear(currentDate.getFullYear()));
-		newDate = new Date(props.date.setMonth(currentDate.getMonth()));
-		newDate = new Date(props.date.setDate(currentDate.getDate()));
+	const onClickDate = (changedDate: Date) => {
+		let newDate = new Date(new Date(props.date).setFullYear(changedDate.getFullYear()));
+		newDate = new Date(new Date(props.date).setMonth(changedDate.getMonth()));
+		newDate = new Date(new Date(props.date).setDate(changedDate.getDate()));			
 
-		props.onChangeDate(props.date)
-		// props.setDate((prev) => {
-		// 	let newDate = new Date(prev.setFullYear(currentDate.getFullYear()));
-		// 	newDate = new Date(prev.setMonth(currentDate.getMonth()));
-		// 	newDate = new Date(prev.setDate(currentDate.getDate()));
-
-		// 	return newDate;
-		// });
+		props.onChangeDate(newDate)
 	};
 
 	const onClickMonthBefore = () => {

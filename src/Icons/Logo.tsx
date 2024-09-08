@@ -27,7 +27,7 @@ export function LogoIcon() {
 				cy='15'
 				r='14'
 				stroke='white'
-				stroke-width='2'
+				strokeWidth='2'
 			/>
 			<path
 				d='M14.5 7C14.5 6.72386 14.7239 6.5 15 6.5C15.2761 6.5 15.5 6.72386 15.5 7V14.5H14.5V7Z'

@@ -1,13 +1,11 @@
-import { amPm, hourArray, minArray, timeScrollValues } from 'lib/const';
+import { amPm } from 'lib/const';
 import './TimeSelector.css';
 import { SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
-import { createTimeScrollDict, getDateMinuteInFiveMulti } from 'util/Time';
+import { createTimeScrollDict, dayHourMinuteToStrFormat } from 'util/Time';
 import { GroupButton } from 'Components/Atom/GroupButton/GroupButton';
-import { DateTimePickerProps } from 'Components/Molecule/DateTimePicker/DateTimePicker';
 
 export interface TimeSelectorProps {
 	date: Date;
-	// setDate: React.Dispatch<SetStateAction<Date>>;
 	onChangeDate: (date: Date) => void;
 }
 
@@ -17,44 +15,25 @@ export function TimeSelector(props: TimeSelectorProps) {
 	const hourDivRef = useRef<HTMLDivElement>(null);
 	const minDivRef = useRef<HTMLDivElement>(null);
 
-	const timeScrollDict = useMemo(() => createTimeScrollDict(), []);
-
 	useEffect(() => {
 		setStateHourAndScroll(props.date);
 		setStateMinuteAndScroll(props.date);
 	}, [props.date]);
 
 	const setStateMinuteAndScroll = (date: Date) => {
-		const dateMinutesInFiveMulti = getDateMinuteInFiveMulti(date);
-
-		const scrollVal = timeScrollValues.find(
-			(timeScroll) => timeScroll.time.minute === dateMinutesInFiveMulti
+		const scrollVal = minuteScrollValues.find(
+			(timeScroll) => timeScroll.time === date.getMinutes()
 		)?.value;
 
 		if (scrollVal !== undefined) {
 			minuteScrollTo(scrollVal);
-
-			if (props.date.getMinutes() !== dateMinutesInFiveMulti) {
-				props.onChangeDate(
-					new Date(date.setMinutes(dateMinutesInFiveMulti))
-				);
-			}
-		}
-
-		//when minute is 58-59
-		else {
-			minuteScrollTo(0);
-			const newDate = new Date(date.setMinutes(0));
-			props.onChangeDate(
-				new Date(newDate.setHours(newDate.getHours() + 1))
-			);
 		}
 	};
 
 	const setStateHourAndScroll = (date: Date) => {
 		const dateHours = getDateHours(date);
-		const scrollVal = timeScrollValues.find(
-			(timeScroll) => timeScroll.time.hour === dateHours
+		const scrollVal = hourScrollValues.find(
+			(timeScroll) => timeScroll.time === dateHours
 		)?.value;
 		if (scrollVal !== undefined) {
 			hourScrollTo(scrollVal);
@@ -81,47 +60,53 @@ export function TimeSelector(props: TimeSelectorProps) {
 		}
 	};
 
-	const handleScroll = () => {
+	const handleScrollHour = () => {
 		if (timeoutId) {
 			clearTimeout(timeoutId);
 		}
 		setTimeoutId(
 			setTimeout(() => {
-				setStateTimeOnScrollEnd();
+				setStateHourOnScrollEnd();
 			}, 200)
 		);
 	};
 
-	const setStateTimeOnScrollEnd = () => {
+	const handleScrollMinute = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+		setTimeoutId(
+			setTimeout(() => {
+				setStateMinuteOnScrollEnd();
+			}, 200)
+		);
+	};
+
+	const setStateHourOnScrollEnd = () => {
 		if (hourDivRef.current) {
 			const { scrollTop } = hourDivRef.current;
-			const scrollDict = timeScrollDict[scrollTop];
+			const scrollDict = hourScrollDict[Math.round(scrollTop)];
 			hourScrollTo(scrollDict.value);
-			// props.setDate((prev) => {
-			// 	if (getAmOrPm(prev) === amPm.pm) {
-			// 		return new Date(prev.setHours(scrollDict.time.hour + 12));
-			// 	}
-			// 	return new Date(prev.setHours(scrollDict.time.hour));
-			// });
 			if (getAmOrPm(props.date) === amPm.pm) {
 				props.onChangeDate(
-					new Date(props.date.setHours(scrollDict.time.hour + 12))
+					new Date(new Date(props.date).setHours(scrollDict.time + 12))
+				);
+			} else {
+				props.onChangeDate(
+					new Date(new Date(props.date).setHours(scrollDict.time))
 				);
 			}
-			props.onChangeDate(
-				new Date(props.date.setHours(scrollDict.time.hour))
-			);
 		}
+	};
 
+	const setStateMinuteOnScrollEnd = () => {
 		if (minDivRef.current) {
 			const { scrollTop } = minDivRef.current;
-			const scrollDict = timeScrollDict[scrollTop];
+
+			const scrollDict = minuteScrollDict[Math.round(scrollTop)];
 			minuteScrollTo(scrollDict.value);
-			// props.setDate(
-			// 	(prev) => new Date(prev.setMinutes(scrollDict.time.minute))
-			// );
 			props.onChangeDate(
-				new Date(props.date.setMinutes(scrollDict.time.minute))
+				new Date(new Date(props.date).setMinutes(scrollDict.time))
 			);
 		}
 	};
@@ -136,17 +121,17 @@ export function TimeSelector(props: TimeSelectorProps) {
 
 	const onClickAmPm = (value: string | number) => {
 		if (value === amPm.pm) {
-			// props.setDate(
-			// 	(prev) => new Date(prev.setHours(prev.getHours() + 12))
-			// );
-			props.onChangeDate(new Date(props.date.setHours(props.date.getHours() + 12)))
+			props.onChangeDate(
+				new Date(props.date.setHours(props.date.getHours() + 12))
+			);
 		} else {
-			// props.setDate(
-			// 	(prev) => new Date(prev.setHours(prev.getHours() - 12))
-			// );
-			props.onChangeDate(new Date(props.date.setHours(props.date.getHours()  - 12)))
+			props.onChangeDate(
+				new Date(props.date.setHours(props.date.getHours() - 12))
+			);
 		}
 	};
+
+	console.log('aaa');
 
 	return (
 		<div>
@@ -164,7 +149,7 @@ export function TimeSelector(props: TimeSelectorProps) {
 				<div
 					className='TimeSelectorGroupDiv'
 					ref={hourDivRef}
-					onScroll={handleScroll}>
+					onScroll={handleScrollHour}>
 					{hourArray.map((hour, i) => (
 						<div
 							className='TimeSelectorLabelDiv'
@@ -176,7 +161,7 @@ export function TimeSelector(props: TimeSelectorProps) {
 				<div
 					className='TimeSelectorGroupDiv'
 					ref={minDivRef}
-					onScroll={handleScroll}>
+					onScroll={handleScrollMinute}>
 					{minArray.map((min, i) => (
 						<div
 							key={i}
@@ -188,4 +173,59 @@ export function TimeSelector(props: TimeSelectorProps) {
 			</div>
 		</div>
 	);
+}
+
+const getTimeScrollValues = (startTime: number, endTime: number) => {
+	const diff = 36;
+	const minuteScrollValues: TimeScroll[] = [
+		{
+			min: 0,
+			max: 18,
+			value: 0,
+			time: startTime,
+		},
+	];
+	for (let i = 1; i < endTime; i++) {
+		const valueBef = minuteScrollValues[i - 1];
+		const value = valueBef.value + diff;
+		minuteScrollValues.push({
+			min: value - diff / 2,
+			max: value + diff / 2,
+			value: valueBef.value + diff,
+			time: valueBef.time + 1,
+		});
+	}
+
+	return minuteScrollValues;
+};
+
+const getTimeArray = (startTime: number, endTime: number) => {
+	const paddingObj = { value: null, label: '' };
+	const timeArray: { value: number | null; label: string }[] = [
+		paddingObj,
+		paddingObj,
+	];
+
+	for (let i = startTime; i <= endTime; i++) {
+		timeArray.push({ value: i, label: dayHourMinuteToStrFormat(i) });
+	}
+
+	timeArray.push(paddingObj);
+	timeArray.push(paddingObj);
+
+	return timeArray;
+};
+
+export const minuteScrollValues = getTimeScrollValues(0, 60);
+export const hourScrollValues = getTimeScrollValues(1, 12);
+const minuteScrollDict = createTimeScrollDict(minuteScrollValues);
+const hourScrollDict = createTimeScrollDict(hourScrollValues);
+export const minArray = getTimeArray(0, 60);
+export const hourArray = getTimeArray(1, 12);
+
+export interface TimeScroll {
+	min: number;
+	max: number;
+	value: number;
+	time: number;
 }
