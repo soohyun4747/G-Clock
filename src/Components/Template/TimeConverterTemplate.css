@@ -24,6 +24,7 @@
 .TimeConverterTemplateBodyDiv {
 	padding: 45px;
 	padding-left: 15px;
+	padding-top: 30px;
 	max-width: 900px;
 }
 
@@ -53,7 +54,7 @@
 	.TimeConverterTemplateTimeRangeGroupDiv2 {
 		display: flex;
 		padding-left: 30px;
-		padding-bottom: 12px;
+		padding-bottom: 9px;
 		align-items: center;
 	}
 
@@ -122,15 +123,15 @@
 .TimeConverterTemplateLeftRangeDiv {
 	height: 50%;
 	width: 100%;
-	border-left: solid 1px #b2b2b2;
-	border-top: solid 1px #b2b2b2;
+	border-left: solid 1px #d7d7d7;
+	border-top: solid 1px #d7d7d7;
 }
 
 .TimeConverterTemplateRightRangeDiv {
 	height: 50%;
 	width: 100%;
-	border-right: solid 1px #b2b2b2;
-	border-top: solid 1px #b2b2b2;
+	border-right: solid 1px #d7d7d7;
+	border-top: solid 1px #d7d7d7;
 }
 
 .TimeConverterTemplateRegionTimeDiv {
