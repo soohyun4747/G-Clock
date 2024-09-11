@@ -272,11 +272,11 @@ export function TimeConverterTemplate() {
 				<div className='TimeConverterTemplateBodyDiv'>
 					<div className='TimeConverterTemplateTimeRangeGroupDiv2'>
 						<div className='TimeConverterTemplateTimeRangeLabelDiv'>
-							Time Range
+							Time Interval
 						</div>
 						<div className='TimeConverterTemplateTimeRangeDiv'>
 							<Textfield
-								style={{ width: 67, marginRight: 9 }}
+								style={{ width: 67, marginRight: 9, height: 36 }}
 								inputStyle={{ textAlign: 'center' }}
 								value={timeRangeInput}
 								setValue={setTimeRangeInput}
@@ -286,6 +286,7 @@ export function TimeConverterTemplate() {
 								options={timeUnitOptions}
 								value={selectedTimeUnit}
 								onChange={onChangeTimeUnit}
+                                style={{height: 36}}
 							/>
 						</div>
 					</div>
@@ -383,7 +384,7 @@ export function TimeConverterTemplate() {
                                 2. Adjust time for a location that is added and check the time of other locations as well
                             </div>
                             <div className='TimeConverterTemplateProgressDiv'>
-                                3. Easily adjust the times for locations using the time range (time interval)
+                                3. Easily adjust the times for locations using the time interval
                             </div>
 						</div>
 					</div>
