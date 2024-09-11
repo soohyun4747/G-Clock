@@ -8,6 +8,7 @@ import {
 } from 'Components/Atom/AlertMessage/AlertMessage';
 import Fuse from 'fuse.js';
 import { enterKeyCode } from 'util/Component';
+import { removeSpacesAndSigns } from 'util/String';
 
 export interface StateCity {
 	country: string;
@@ -19,7 +20,7 @@ export interface StateCity {
 export interface PlaceSearcherProps {
 	style?: React.CSSProperties;
 	onAdd: (stateCity: StateCity) => void;
-	setAlertInfo: React.Dispatch<SetStateAction<AlertMessageProps | undefined>>
+	setAlertInfo: React.Dispatch<SetStateAction<AlertMessageProps | undefined>>;
 }
 
 export function PlaceSearcher(props: PlaceSearcherProps) {
@@ -41,7 +42,9 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 
 	const onClickAdd = () => {
 		const stateOrCityInfo = statesCitiesList.find(
-			(value) => value.name === stateOrCity
+			(value) =>
+				stringToOnlyLetters(value.name) ===
+				stringToOnlyLetters(stateOrCity)
 		);
 		if (stateOrCityInfo) {
 			props.onAdd(stateOrCityInfo);
@@ -54,11 +57,13 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 		}
 	};
 
-	const onEnterKeyDown = (
-		event: React.KeyboardEvent<HTMLInputElement>
-	) => {
+	const stringToOnlyLetters = (value: string) => {
+		return removeSpacesAndSigns(value).toLowerCase();
+	};
+
+	const onEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.code === enterKeyCode) {
-			onClickAdd()
+			onClickAdd();
 		}
 	};
 
@@ -103,7 +108,6 @@ const getStatesCitiesList = () => {
 	statesList.forEach((state) => {
 		const country = Country.getCountryByCode(state.countryCode);
 		if (country) {
-			
 			listOfStatesAndCities.push({
 				country: country.name,
 				name: state.name,

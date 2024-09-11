@@ -1,4 +1,7 @@
-import { TimeScroll, minuteScrollValues } from 'Components/Molecule/TimeSelector/TimeSelector';
+import {
+	TimeScroll,
+	minuteScrollValues,
+} from 'Components/Molecule/TimeSelector/TimeSelector';
 import moment from 'moment';
 
 // export interface ScrollTime {
@@ -54,13 +57,6 @@ export const convertTimeZone = (
 	timezone: string,
 	homeDate: Date
 ) => {
-	console.log(
-		moment
-			.tz(homeDate, homeTimezone)
-			.tz(timezone)
-			.format('YYYY-MM-DD HH:mm:ss')
-	);
-
 	return new Date(
 		moment
 			.tz(homeDate, homeTimezone)
@@ -69,18 +65,21 @@ export const convertTimeZone = (
 	);
 };
 
-export const calculateHourDifference = (homeTimezone: string, timezone: string) => {
+export const calculateHourDifference = (
+	homeTimezone: string,
+	timezone: string
+) => {
 	// Get the current time in both time zones
 	const homeTime = moment.tz(homeTimezone);
 	const time = moment.tz(timezone);
 
 	// Calculate the difference in hours
-	
-	const diffInHours = time.utcOffset() / 60 - homeTime.utcOffset() / 60 ;
+
+	const diffInHours = time.utcOffset() / 60 - homeTime.utcOffset() / 60;
 
 	return diffInHours;
 };
 
 export const hoursToMilliseconds = (hours: number): number => {
 	return hours * 60 * 60 * 1000;
-  };
+};

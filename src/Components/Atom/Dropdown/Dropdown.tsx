@@ -20,10 +20,7 @@ export function Dropdown(props: DropdownProps) {
 			<select
 				value={props.value}
 				className='DropdownSelect'
-				onChange={props.onChange}
-				onSelect={(e) => {
-					console.log(e);
-				}}>
+				onChange={props.onChange}>
 				{props.options.map((option, i) => (
 					<option
 						key={i}
