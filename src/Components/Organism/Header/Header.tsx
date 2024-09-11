@@ -30,14 +30,14 @@ export function Header(props: HeaderProps) {
 
 	return (
 		<div className='HeaderContainerDiv'>
-			<div className='HeaderLogoGroupDiv HeaderCusorPointer'>
+			<div className='HeaderLogoGroupDiv CursorPointer'>
 				<LogoIcon />
 				<div className='HeaderTitleDiv HeaderTextDiv'>
-					G-Time Converter
+					Global Time Converter
 				</div>
 			</div>
 			<div
-				className='HeaderTextDiv HeaderCusorPointer'
+				className='HeaderTextDiv CursorPointer'
 				onClick={copyUrlToClipboard}>
 				copy link
 			</div>

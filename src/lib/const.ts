@@ -13,7 +13,6 @@ export const months: string[] = [
 	'December',
 ];
 
-
 export const amPm = {
 	am: 'am',
 	pm: 'pm',
@@ -26,17 +25,22 @@ export const minDateTime = new Date(minDate).getTime();
 export const maxDateTime = new Date(maxDate).getTime();
 
 export const timeUnit = {
-	sec: 'sec',
 	min: 'min',
 	hour: 'hour',
-};
+	day: 'day',
+} as const;
 
+export type TimeUnit = (typeof timeUnit)[keyof typeof timeUnit];
 
 export const SeoulInfo = {
 	country: 'South Korea',
 	name: 'Seoul',
-	latitude: 37.532600,
-	longitude: 127.024612
-}
+	latitude: 37.5326,
+	longitude: 127.024612,
+};
 
-export const SeoulTimezone = 'Asia/Seoul'
+export const SeoulTimezone = 'Asia/Seoul';
+
+export const minuteToMsec = 60000;
+export const hourToMsec = minuteToMsec * 60;
+export const dayToMsec = hourToMsec * 24;

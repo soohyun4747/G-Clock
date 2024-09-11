@@ -7,7 +7,7 @@ import { useEffect, useMemo } from 'react';
 
 export interface IRegionTime {
 	stateCity: StateCity;
-	regionTimeHome?: RegionTimeProps;
+	// regionTimeHome?: RegionTimeProps;
 	startDate: Date;
 	endDate: Date;
 	timezone: string;
@@ -16,6 +16,7 @@ export interface IRegionTime {
 export interface RegionTimeProps extends IRegionTime {
 	style?: React.CSSProperties;
 	homeTimeDiff?: number;
+	regionTimeHome?: RegionTimeProps;
 }
 
 export function RegionTime(props: RegionTimeProps) {

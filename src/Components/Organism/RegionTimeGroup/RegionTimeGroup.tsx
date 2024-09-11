@@ -14,6 +14,7 @@ import { calculateHourDifference, hoursToMilliseconds } from 'util/Time';
 export interface RegionTimeGroupProps extends RegionTimeProps {
 	style?: React.CSSProperties;
 	index: number;
+	regionTimeList: IRegionTime[];
 	onChangeStartDate: (date: Date, index: number) => void;
 	onChangeEndDate: (date: Date, index: number) => void;
 	onClickHome: (props: IRegionTime) => void;
@@ -23,13 +24,20 @@ export interface RegionTimeGroupProps extends RegionTimeProps {
 
 export function RegionTimeGroup(props: RegionTimeGroupProps) {
 	const isHome = useMemo(() => {
-		if(props.regionTimeHome){
-			if(props.regionTimeHome.stateCity.name === props.stateCity.name){
-				return true
+		if (props.regionTimeHome) {
+			if (props.regionTimeHome.stateCity.name === props.stateCity.name) {
+				return true;
 			}
 		}
-		return false
-	}, [props.regionTimeHome, props.stateCity])
+		return false;
+	}, [props.regionTimeHome, props.stateCity]);
+
+	const isRegionTimeListOne = useMemo(() => {
+		if (props.regionTimeList.length === 1) {
+			return true;
+		}
+		return false;
+	}, [props.regionTimeList]);
 
 	const timeHourDiff = useMemo(() => {
 		if (props.regionTimeHome) {
@@ -93,41 +101,49 @@ export function RegionTimeGroup(props: RegionTimeGroupProps) {
 		<div
 			className='RegionTimeGroupContainerDiv'
 			style={props.style}>
-			<div className='RegionTimeGroupIconsDiv'>
-				<IconButton
-					icon={<HomeIcon />}
-					onClick={() => props.onClickHome(props)}
-					style={{opacity: isHome ? 0.3 : 1}}
-					disabled={isHome ?true : false}
-					
-				/>
-				<IconButton
-					icon={<CloseIcon />}
-					onClick={() => props.onClickDelete(props.index)}
-					style={{opacity: isHome ? 0.3 : 1}}
-					disabled={isHome ?true : false}
+			<div className='RegionTimeGroupGridItem1'>
+				<div className='RegionTimeGroupIconsDiv'>
+					<IconButton
+						icon={<HomeIcon />}
+						onClick={() => props.onClickHome(props)}
+						style={{ opacity: isHome ? 0.3 : 1 }}
+						disabled={isHome ? true : false}
+					/>
+					<IconButton
+						icon={<CloseIcon />}
+						onClick={() => props.onClickDelete(props.index)}
+						style={{
+							opacity: isRegionTimeListOne ? 0.3 : 1,
+						}}
+						disabled={isRegionTimeListOne ? true : false}
+					/>
+				</div>
+				<RegionTime
+					style={{ width: '100%' }}
+					stateCity={props.stateCity}
+					startDate={props.startDate}
+					endDate={props.endDate}
+					regionTimeHome={props.regionTimeHome}
+					timezone={props.timezone}
+					homeTimeDiff={timeHourDiff}
 				/>
 			</div>
-			<RegionTime
-				style={{ marginRight: 12, width: '100%' }}
-				stateCity={props.stateCity}
-				startDate={props.startDate}
-				endDate={props.endDate}
-				regionTimeHome={props.regionTimeHome}
-				timezone={props.timezone}
-				homeTimeDiff={timeHourDiff}
-			/>
-			<DateTimePicker
-				style={{ marginRight: 12 }}
-				date={props.startDate}
-				label='From'
-				onChangeDate={onChangeStartDate}
-			/>
-			<DateTimePicker
-				date={props.endDate}
-				label='To'
-				onChangeDate={onChangeEndDate}
-			/>
+			<div className='RegionTimeGroupGridItem2'>
+				<DateTimePicker
+					date={props.startDate}
+					label='From'
+					onChangeDate={onChangeStartDate}
+					style={{width: 'auto'}}
+				/>
+			</div>
+			<div className='RegionTimeGroupGridItem3'>
+				<DateTimePicker
+					date={props.endDate}
+					label='To'
+					onChangeDate={onChangeEndDate}
+					style={{width: 'auto'}}
+				/>
+			</div>
 		</div>
 	);
 }

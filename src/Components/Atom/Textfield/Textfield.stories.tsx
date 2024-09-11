@@ -8,15 +8,15 @@ export default {
 };
 
 const Template = () => {
-	const [value, setValue] = useState<string>('');
+	const [value, setValue] = useState<string | number>('');
 
 	return (
 		<Textfield
 			value={value}
 			setValue={setValue}
+			onBlur={() => {}}
 		/>
 	);
 };
 
 export const Default: Story<TextfieldProps> = Template.bind({});
-

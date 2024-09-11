@@ -1,25 +1,51 @@
 .FooterContainerDiv {
-    width: 100%;
-    box-sizing: border-box;
-    background-color: #14aaff;
-    padding: 24px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: #14aaff;
+	padding: 30px;
+	color: white;
+	display: grid;
+	align-items: center;
 }
 
 .FooterLogoDiv {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .FooterTitleDiv {
-    padding-left: 12px;
-    font-size: 16px;
-    font-weight: 900;
+	padding-left: 9px;
+	font-size: 16px;
+	font-weight: 600;
 }
 
 .FooterTextDiv {
-    font-size: 12px;
+	font-size: 12px;
+}
+
+.FooterEmailDiv {
+	text-align: right;
+}
+
+@media screen and (max-width: 1044px) {
+	.FooterRightsDiv {
+		text-align: center;
+        padding-top: 12px;
+        padding-bottom: 30px;
+	}
+	.FooterEmailDiv {
+		text-align: center;
+        padding-top: 30px;
+        padding-bottom: 12px;
+	}
+}
+
+@media screen and (min-width: 1045px) {
+	.FooterContainerDiv {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+	.FooterLogoDiv {
+		justify-content: center;
+	}
 }

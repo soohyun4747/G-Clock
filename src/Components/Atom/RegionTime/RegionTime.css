@@ -22,11 +22,31 @@
 	padding-right: 6px;
 	font-size: 18px;
 	font-weight: 900;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 114px;
 }
 
 .RegionTimeTimeDiv {
 	font-size: 15px;
 	font-weight: 900;
+}
+
+@media screen and (max-width: 1044px) {
+	.RegionTimeStateDiv {
+		max-width: 150px;
+	}
+	.RegionTimeTimeDiv {
+		font-size: 16px;
+	}
+}
+
+
+@media screen and (max-width: 380px) {
+	.RegionTimeStateDiv {
+		max-width: 54px;
+	}
 }
 
 .RegionTimeCountryDateDiv {
@@ -42,9 +62,10 @@
 
 .RegionTimeDiffHomeDiv {
 	opacity: 0.3;
+	display: flex;
 }
 
 .RegionTimeDiffDiv {
-    font-size: 15px;
-    font-weight: 900;
+	font-size: 15px;
+	font-weight: 900;
 }

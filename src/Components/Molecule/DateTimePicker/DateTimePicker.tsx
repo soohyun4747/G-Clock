@@ -24,6 +24,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
 	const dateInputRef = useRef<HTMLInputElement>(null);
 	const inputContainerRef = useRef<HTMLDivElement>(null);
 	const calendarContainerRef = useRef<HTMLDivElement>(null);
+	const calendarIconRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		window.addEventListener('click', handleClickOutside);
@@ -34,15 +35,14 @@ export function DateTimePicker(props: DateTimePickerProps) {
 		};
 	}, []);
 
-	useEffect(() => {		
+	useEffect(() => {
 		setDateStr(dateToStrFormat(props.date));
 	}, [props.date]);
-	
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (
-			inputContainerRef.current &&
-			!inputContainerRef.current.contains(event.target as Node) &&
+			calendarIconRef.current &&
+			!calendarIconRef.current.contains(event.target as Node) &&
 			calendarContainerRef.current &&
 			!calendarContainerRef.current.contains(event.target as Node)
 		) {
@@ -52,7 +52,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
 
 	const dateToStrFormat = (date: Date) => {
 		const year = date.getFullYear();
-		const month = monthToStrFormat(date.getMonth());
+		const month = monthToStrFormat(date.getMonth() + 1);
 		const day = dayHourMinuteToStrFormat(date.getDate());
 		const hour = dayHourMinuteToStrFormat(date.getHours());
 		const minute = dayHourMinuteToStrFormat(date.getMinutes());
@@ -62,9 +62,9 @@ export function DateTimePicker(props: DateTimePickerProps) {
 
 	const monthToStrFormat = (month: number) => {
 		if (month.toString().length === 1) {
-			return `0${month + 1}`;
+			return `0${month}`;
 		} else {
-			return month + 1;
+			return month;
 		}
 	};
 
@@ -81,18 +81,16 @@ export function DateTimePicker(props: DateTimePickerProps) {
 			dateValueTime <= maxDateTime
 		) {
 			props.onChangeDate(dateValue!);
-		} else {
-			setDateStr(dateToStrFormat(props.date));
 		}
+		setDateStr(dateToStrFormat(props.date));
 	};
 
 	const onClickCalendarIcon = () => {
 		setCalendarVisible((prev) => !prev);
 	};
 
-	
 	return (
-		<div>
+		<div className='DateTimePickerContainerDiv'>
 			{props.label && (
 				<div className='DateTimePickerLabelDiv'>{props.label}</div>
 			)}
@@ -100,10 +98,12 @@ export function DateTimePicker(props: DateTimePickerProps) {
 				style={props.style}
 				ref={inputContainerRef}
 				className='DateTimePickerParentDiv DateTimePickerInputDiv'>
-				<IconButton
-					icon={<CalendarIcon />}
-					onClick={onClickCalendarIcon}
-				/>
+				<div ref={calendarIconRef}>
+					<IconButton
+						icon={<CalendarIcon />}
+						onClick={onClickCalendarIcon}
+					/>
+				</div>
 				<input
 					type='datetime-local'
 					ref={dateInputRef}

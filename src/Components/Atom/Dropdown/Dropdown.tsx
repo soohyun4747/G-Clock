@@ -9,20 +9,18 @@ export interface DropdownProps {
 	options: DropdownOption[];
 	value: string | number;
 	style?: React.CSSProperties;
-	setValue: React.Dispatch<React.SetStateAction<string | number>>;
+	onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export function Dropdown(props: DropdownProps) {
-	const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		props.setValue(event.target.value);
-	};
-
 	return (
-		<div className='DropdownContainerDiv' style={props.style}>
+		<div
+			className='DropdownContainerDiv'
+			style={props.style}>
 			<select
 				value={props.value}
 				className='DropdownSelect'
-				onChange={onChangeSelect}
+				onChange={props.onChange}
 				onSelect={(e) => {
 					console.log(e);
 				}}>

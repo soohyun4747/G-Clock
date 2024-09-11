@@ -9,13 +9,17 @@ export default {
 };
 
 const Template = (args: DropdownProps) => {
-	const [value, setValue] = useState<string | number>(timeUnit.hour);    
+	const [value, setValue] = useState<string | number>(timeUnit.hour);   
+	
+	const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		setValue(event.target.value)
+	}
 
 	return (
 		<Dropdown
 			{...args}
 			value={value}
-			setValue={setValue}
+			onChange={onChange}
 		/>
 	);
 };
