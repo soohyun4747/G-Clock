@@ -1,16 +1,103 @@
-.TimeConverterBodyFooterDiv {
-    overflow: auto;
-    height: calc(100vh - 60px);
-    margin-top: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.TimeConverterTemplateDetailsGroupDiv {
+	display: grid;
+	font-size: 12px;
+}
+
+.TimeConverterTemplateTimeRangeGroupDiv {
+	display: flex;
+	width: 506px;
+	align-items: flex-end;
+	padding-left: 12px;
+}
+
+.TimeConverterTemplateTimeRangeGroupDiv2 {
+	display: none;
+}
+
+.TimeConverterTemplateTimeRangeDiv {
+	display: flex;
+	align-items: center;
+	padding-left: 12px;
+	padding-right: 12px;
 }
 
 .TimeConverterTemplateBodyDiv {
-    padding: 60px;
-	padding-left: 240px;
-    padding-right: 270px;
+	padding: 45px;
+	padding-left: 15px;
+	max-width: 900px;
+}
+
+.TimeConverterTemplateImg {
+	width: 100%;
+}
+
+
+.TimeConverterTemplateH {
+	font-size: 15px;
+	margin-top: 0;
+}
+
+.TimeConverterTemplateProgressDiv {
+	margin-bottom: 9px;
+}
+
+@media screen and (max-width: 1044px) {
+	.TimeConverterTemplateBodyDiv {
+		max-width: 450px;
+	}
+
+	.TimeConverterTemplateTimeRangeGroupDiv {
+		display: none;
+	}
+
+	.TimeConverterTemplateTimeRangeGroupDiv2 {
+		display: flex;
+		padding-left: 30px;
+		padding-bottom: 12px;
+		align-items: center;
+	}
+
+	.TimeConverterTemplateTimeRangeLabelDiv {
+		font-size: 15px;
+		font-weight: 600;
+		flex: 1;
+	}
+	.TimeConverterTemplateTimeRangeDiv {
+		padding-right: 0;
+	}
+
+	.TimeConverterTemplateDetailsGroupDiv {
+		font-size: 16px;
+	}
+
+	.TimeConverterTemplateH{
+		font-size: 18px;
+	}
+
+	.TimeConverterTemplateImg {
+		height: 100%;
+	}
+}
+
+@media screen and (min-width: 1045px) {
+	.TimeConverterTemplateDetailsGroupDiv {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.TimeConverterTemplateImg {
+		margin: -60px 0px 0px 0px;
+	}
+}
+
+.TimeConverterBodyFooterDiv {
+	overflow: auto;
+	height: calc(100vh - 60px);
+	margin-top: 66px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	overflow-x: hidden;
 }
 
 .TimeConverterTemplatePlaceTimeDiv {
@@ -18,37 +105,18 @@
 	display: flex;
 }
 
-.TimeConverterTemplateTimeRangeGroupDiv {
-	display: flex;
-	width: 506px;
-	align-items: flex-end;
-    padding-left: 12px;
-}
-
-
-.TimeConverterTemplateTimeRangeDiv {
-	display: flex;
-    align-items: center;
-    padding-left: 12px;
-    padding-right: 12px;
-}
-
 .TimeConverterTemplateAdvDiv {
-    margin-left: 30px;
-    margin-top: 45px;
-    margin-bottom: 45px;
+	margin-left: 30px;
+	margin-top: 45px;
+	margin-bottom: 45px;
 	height: 150px;
-    background-color: lightgray;
+	background-color: lightgray;
+	overflow: hidden;
 }
 
 .TimeConverterTemplateDetailDiv {
 	padding-left: 30px;
-}
-
-.TimeConverterTemplateDetailsGroupDiv {
-	display: flex;
-	justify-content: space-between;
-	font-size: 12px;
+	padding-bottom: 30px;
 }
 
 .TimeConverterTemplateLeftRangeDiv {
@@ -66,5 +134,5 @@
 }
 
 .TimeConverterTemplateRegionTimeDiv {
-    padding-top: 12px;
+	padding-top: 12px;
 }

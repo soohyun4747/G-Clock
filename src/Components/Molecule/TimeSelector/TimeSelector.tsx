@@ -131,8 +131,6 @@ export function TimeSelector(props: TimeSelectorProps) {
 		}
 	};
 
-	console.log('aaa');
-
 	return (
 		<div>
 			<GroupButton

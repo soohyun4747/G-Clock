@@ -3,17 +3,16 @@ import { State, Country, IState } from 'country-state-city';
 import { SetStateAction, useState } from 'react';
 import { WordButton } from 'Components/Atom/WordButton/WordButton';
 import {
-	AlertMessage,
 	AlertMessageProps,
 	AlertMessageSet,
 } from 'Components/Atom/AlertMessage/AlertMessage';
-import { getSimilarity } from 'util/String';
 import Fuse from 'fuse.js';
+import { enterKeyCode } from 'util/Component';
+import { removeSpacesAndSigns } from 'util/String';
 
 export interface StateCity {
 	country: string;
 	name: string;
-	// code: string;
 	latitude: number | undefined;
 	longitude: number | undefined;
 }
@@ -21,12 +20,11 @@ export interface StateCity {
 export interface PlaceSearcherProps {
 	style?: React.CSSProperties;
 	onAdd: (stateCity: StateCity) => void;
-	setAlertInfo: React.Dispatch<SetStateAction<AlertMessageProps | undefined>>
+	setAlertInfo: React.Dispatch<SetStateAction<AlertMessageProps | undefined>>;
 }
 
 export function PlaceSearcher(props: PlaceSearcherProps) {
 	const [stateOrCity, setStateOrCity] = useState<string>('');
-	// const [alertInfo, setAlertInfo] = useState<AlertMessageProps>();
 	const [filteredStatesCitiesList, setFilteredStatesCitiesList] = useState<
 		StateCity[]
 	>([]);
@@ -44,7 +42,9 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 
 	const onClickAdd = () => {
 		const stateOrCityInfo = statesCitiesList.find(
-			(value) => value.name === stateOrCity
+			(value) =>
+				stringToOnlyLetters(value.name) ===
+				stringToOnlyLetters(stateOrCity)
 		);
 		if (stateOrCityInfo) {
 			props.onAdd(stateOrCityInfo);
@@ -54,6 +54,16 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 				'There is no such city or state',
 				'error'
 			);
+		}
+	};
+
+	const stringToOnlyLetters = (value: string) => {
+		return removeSpacesAndSigns(value).toLowerCase();
+	};
+
+	const onEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.code === enterKeyCode) {
+			onClickAdd();
 		}
 	};
 
@@ -69,21 +79,22 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 					list='states-cities-list'
 					onChange={onChangeInput}
 					value={stateOrCity}
+					onKeyDown={onEnterKeyDown}
 				/>
+				<datalist id='states-cities-list'>
+					{filteredStatesCitiesList.map((stateOrCity, i) => (
+						<option
+							key={i}
+							value={stateOrCity.name}
+							label={`${stateOrCity.country}, ${stateOrCity.name}`}></option>
+					))}
+				</datalist>
 			</div>
 			<WordButton
 				label='Add'
 				style={{ height: 36, marginLeft: 9, width: 60, padding: 0 }}
 				onClick={onClickAdd}
 			/>
-			<datalist id='states-cities-list'>
-				{filteredStatesCitiesList.map((stateOrCity, i) => (
-					<option
-						key={i}
-						value={stateOrCity.name}
-						label={`${stateOrCity.country}, ${stateOrCity.name}`}></option>
-				))}
-			</datalist>
 			{/* {alertInfo && <AlertMessage {...alertInfo} />} */}
 		</div>
 	);
@@ -100,7 +111,6 @@ const getStatesCitiesList = () => {
 			listOfStatesAndCities.push({
 				country: country.name,
 				name: state.name,
-				// code: state.isoCode,
 				latitude: state.latitude ? Number(state.latitude) : undefined,
 				longitude: state.longitude
 					? Number(state.longitude)

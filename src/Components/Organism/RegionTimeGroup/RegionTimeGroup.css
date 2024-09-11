@@ -1,11 +1,49 @@
+.RegionTimeGroupIconsDiv {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	padding-right: 6px;
+}
+
 .RegionTimeGroupContainerDiv {
+    display: grid;
+}
+
+.RegionTimeGroupGridItem1 {
     display: flex;
 }
 
-.RegionTimeGroupIconsDiv {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    padding-right: 6px;
+@media screen and (min-width: 1045px) {
+	.RegionTimeGroupContainerDiv {
+		grid-template-columns: 2fr 1fr 1fr;
+	}
+
+	.RegionTimeGroupGridItem1 {
+		margin-right: 12px;
+	}
+
+    .RegionTimeGroupGridItem2 {
+        margin-right: 12px;
+    }
 }
+
+
+@media screen and (max-width: 1044px) {
+
+	.RegionTimeGroupGridItem1 {
+        margin-top: 12px;
+	}
+
+    .RegionTimeGroupGridItem2 {
+        margin-top: 6px;
+        margin-left: 30px;
+    }
+
+	.RegionTimeGroupGridItem3 {
+        margin-top: 6px;
+		margin-left: 30px;
+        margin-bottom: 12px;
+	}
+}
+

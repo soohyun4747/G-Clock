@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import { ClassAttributes, HTMLAttributes, useRef } from 'react';
 import './IconButton.css';
 
 interface IconButtonProps extends HTMLAttributes<HTMLButtonElement> {
@@ -10,8 +10,8 @@ export function IconButton(props: IconButtonProps) {
 	return (
 		<button
 			className='iconButton'
-			disabled={props.disabled}
-			{...props}>
+			{...props}
+			disabled={props.disabled}>
 			{props.icon}
 		</button>
 	);

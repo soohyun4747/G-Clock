@@ -6,4 +6,4 @@ export const onEnterKeyDown = (
 	}
 };
 
-const enterKeyCode = 'Enter';
+export const enterKeyCode = 'Enter';

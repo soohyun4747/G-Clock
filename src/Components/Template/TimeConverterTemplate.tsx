@@ -1,16 +1,20 @@
 import { Dropdown } from 'Components/Atom/Dropdown/Dropdown';
-import {
-	IRegionTime,
-	RegionTimeProps,
-} from 'Components/Atom/RegionTime/RegionTime';
+import { IRegionTime } from 'Components/Atom/RegionTime/RegionTime';
 import {
 	PlaceSearcher,
 	StateCity,
 } from 'Components/Molecule/PlaceSearcher/PlaceSearcher';
 import { Header } from 'Components/Organism/Header/Header';
 import { RegionTimeGroup } from 'Components/Organism/RegionTimeGroup/RegionTimeGroup';
-import { SeoulInfo, SeoulTimezone, timeUnit } from 'lib/const';
-import { SetStateAction, useEffect, useState } from 'react';
+import {
+	SeoulInfo,
+	SeoulTimezone,
+	dayToMsec,
+	hourToMsec,
+	minuteToMsec,
+	timeUnit,
+} from 'lib/const';
+import { useEffect, useState } from 'react';
 import { convertTimeZone, dateAfter } from 'util/Time';
 import './TimeConverterTemplate.css';
 import { Textfield } from 'Components/Atom/Textfield/Textfield';
@@ -24,19 +28,20 @@ import moment from 'moment-timezone';
 import {
 	AlertMessage,
 	AlertMessageProps,
+	AlertMessageSet,
 } from 'Components/Atom/AlertMessage/AlertMessage';
-
-// export interface IRegionTime extends Omit<RegionTimeProps, 'regionTimeHome'> {}
+import { ProgressCircle } from 'Components/Atom/ProgressCircle/ProgressCircle';
 
 export function TimeConverterTemplate() {
 	const [timeRange, setTimeRange] = useState<number>(30);
-	const [timeRangeInput, setTimeRangeInput] = useState<string>('30');
+	const [timeRangeInput, setTimeRangeInput] = useState<string | number>(30);
 	const [selectedTimeUnit, setSelectedTimeUnit] = useState<string | number>(
 		timeUnit.min
 	);
 	const [regionTimeHome, setRegionTimeHome] = useState<IRegionTime>();
 	const [regionTimeList, setRegionTimeList] = useState<IRegionTime[]>([]);
 	const [alertInfo, setAlertInfo] = useState<AlertMessageProps>();
+	const [isProgress, setIsProgress] = useState<boolean>(false);
 
 	useEffect(() => {
 		setStateInitRegionTime();
@@ -74,7 +79,7 @@ export function TimeConverterTemplate() {
 	};
 
 	const getCityStateNameFromTimezone = (timezone: string) => {
-		const [continent, cityState] = timezone.split('/');
+		const [, cityState] = timezone.split('/');
 		const cityStateName = cityState.split('_').join(' ');
 		return cityStateName;
 	};
@@ -85,60 +90,110 @@ export function TimeConverterTemplate() {
 			stateCity.latitude !== undefined &&
 			stateCity.longitude !== undefined
 		) {
-			getTimeZoneFromCoordinates(
-				stateCity.latitude,
-				stateCity.longitude
-			).then((response) => {
-				const data = response.data.results[0];
+			setIsProgress(true);
+			getTimeZoneFromCoordinates(stateCity.latitude, stateCity.longitude)
+				.then((response) => {
+					const data = response.data.results[0];
+					const timezone = data.timezone.name;
 
-				const timezone = data.timezone.name;
+					setRegionTimeList((prev) => {
+						prev.push({
+							stateCity: stateCity,
+							startDate: convertTimeZone(
+								regionTimeHome.timezone,
+								timezone,
+								regionTimeHome.startDate
+							),
+							endDate: convertTimeZone(
+								regionTimeHome.timezone,
+								timezone,
+								regionTimeHome.endDate
+							),
+							timezone: timezone,
+						});
 
-				setRegionTimeList((prev) => {
-					prev.push({
-						stateCity: stateCity,
-						startDate: convertTimeZone(
-							regionTimeHome.timezone,
-							timezone,
-							regionTimeHome.startDate
-						),
-						endDate: convertTimeZone(
-							regionTimeHome.timezone,
-							timezone,
-							regionTimeHome.endDate
-						),
-						timezone: timezone,
+						return [...prev];
 					});
-
-					return [...prev];
+					setIsProgress(false);
+				})
+				.catch((error) => {
+					setIsProgress(false);
+					console.log({ error });
+					AlertMessageSet(
+						setAlertInfo,
+						'Failed to add the region',
+						'error'
+					);
 				});
-			});
 		}
 	};
 
-	const onChangeDate = (
-		date: Date,
-		index: number,
-		dateType: 'startDate' | 'endDate'
-	) => {
-		const changedTimeDiff =
-			date.getTime() - regionTimeList[index][dateType].getTime();
-
+	const setStateRegionTimeHome = (dateType: DateType, timeDiff: number) => {
 		setRegionTimeHome((prev) => {
 			if (prev) {
-				prev[dateType] = new Date(
-					prev[dateType].getTime() + changedTimeDiff
-				);
+				prev[dateType] = new Date(prev[dateType].getTime() + timeDiff);
 				return { ...prev };
 			}
 		});
 	};
 
+	const setStateTimeRangeWithPrevTimeDiff = (timeDiff: number) => {
+		setTimeRange((prev) => {
+			const newTimeRange = prev + timeRangeByUnit(timeDiff);
+			setTimeRangeInput(Math.round(newTimeRange));
+			return newTimeRange;
+		});
+	};
+
+	const timeRangeByUnit = (timeMSec: number) => {
+		switch (selectedTimeUnit) {
+			case timeUnit.min:
+				return timeMSec / minuteToMsec;
+			case timeUnit.hour:
+				return timeMSec / hourToMsec;
+			case timeUnit.day:
+				return timeMSec / dayToMsec;
+			default:
+				return timeMSec / minuteToMsec;
+		}
+	};
+
 	const onChangeStartDate = (date: Date, index: number) => {
-		onChangeDate(date, index, 'startDate');
+		const newStartDateTime = date.getTime();
+		const endDateTime = regionTimeList[index][dateType.endDate].getTime();
+
+		const changedTimeDiff =
+			date.getTime() -
+			regionTimeList[index][dateType.startDate].getTime();
+		setStateRegionTimeHome(dateType.startDate, changedTimeDiff);
+
+		if (endDateTime <= newStartDateTime) {
+			setStateRegionTimeHome(dateType.endDate, changedTimeDiff);
+		} else {
+			setStateTimeRangeWithPrevTimeDiff(-changedTimeDiff);
+		}
 	};
 
 	const onChangeEndDate = (date: Date, index: number) => {
-		onChangeDate(date, index, 'endDate');
+		const newEndDateTime = date.getTime();
+		const startDateTime =
+			regionTimeList[index][dateType.startDate].getTime();
+
+		const changedTimeDiff =
+			date.getTime() - regionTimeList[index][dateType.endDate].getTime();
+		setStateRegionTimeHome(dateType.endDate, changedTimeDiff);
+
+		if (newEndDateTime <= startDateTime) {
+			// AlertMessageSet(
+			// 	setAlertInfo,
+			// 	'Ending date should be larger than starting date',
+			// 	'error'
+			// );
+			setStateRegionTimeHome(dateType.startDate, changedTimeDiff);
+		} else {
+			setStateTimeRangeWithPrevTimeDiff(changedTimeDiff);
+			// setStateRegionTimeHome(dateType.endDate, changedTimeDiff);
+		}
 	};
 
 	const onClickHome = (props: IRegionTime) => {
@@ -147,18 +202,93 @@ export function TimeConverterTemplate() {
 
 	const onClickDelete = (index: number) => {
 		setRegionTimeList((prev) => {
-			prev.splice(index, 1);
+			//if deleting home region and there is only one
+			if (
+				prev[index].stateCity.name === regionTimeHome?.stateCity.name &&
+				prev.filter(
+					(item) =>
+						item.stateCity.name === regionTimeHome?.stateCity.name
+				).length === 1
+			) {
+				prev.splice(index, 1);
+				setRegionTimeHome(prev[0]);
+			} else {
+				prev.splice(index, 1);
+			}
 			return [...prev];
 		});
 	};
 
+	const onBlurTimeRange = (event: React.FocusEvent<HTMLInputElement>) => {
+		const numVal = Number(event.target.value);
+
+		if (isNaN(numVal)) {
+			setTimeRangeInput(timeRange);
+		} else {
+			const timeRangeMsec = getTimeRangeMsec(numVal, selectedTimeUnit);
+			setRegionTimeHomeWithTimeDiff(timeRangeMsec);
+			setTimeRange(numVal);
+		}
+	};
+
+	const setRegionTimeHomeWithTimeDiff = (timeRangeMsec: number) => {
+		if (regionTimeHome) {
+			const changedEndTimeDiff =
+				regionTimeHome.startDate.getTime() +
+				timeRangeMsec -
+				regionTimeHome.endDate.getTime();
+
+			setStateRegionTimeHome('endDate', changedEndTimeDiff);
+		}
+	};
+
+	const getTimeRangeMsec = (value: number, unit: string | number) => {
+		let unitMsec = 1;
+		switch (unit) {
+			case timeUnit.min:
+				unitMsec = minuteToMsec * value;
+				break;
+			case timeUnit.hour:
+				unitMsec = hourToMsec * value;
+				break;
+			case timeUnit.day:
+				unitMsec = dayToMsec * value;
+				break;
+		}
+
+		return unitMsec;
+	};
+
+	const onChangeTimeUnit = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const timeRangeMsec = getTimeRangeMsec(timeRange, event.target.value);
+		setRegionTimeHomeWithTimeDiff(timeRangeMsec);
+		setSelectedTimeUnit(event.target.value);
+	};
+
 	return (
 		<div>
-			<Header
-				setAlertInfo={setAlertInfo}
-			/>
+			<Header setAlertInfo={setAlertInfo} />
 			<div className='TimeConverterBodyFooterDiv'>
 				<div className='TimeConverterTemplateBodyDiv'>
+					<div className='TimeConverterTemplateTimeRangeGroupDiv2'>
+						<div className='TimeConverterTemplateTimeRangeLabelDiv'>
+							Time Range
+						</div>
+						<div className='TimeConverterTemplateTimeRangeDiv'>
+							<Textfield
+								style={{ width: 67, marginRight: 9 }}
+								inputStyle={{ textAlign: 'center' }}
+								value={timeRangeInput}
+								setValue={setTimeRangeInput}
+								onBlur={onBlurTimeRange}
+							/>
+							<Dropdown
+								options={timeUnitOptions}
+								value={selectedTimeUnit}
+								onChange={onChangeTimeUnit}
+							/>
+						</div>
+					</div>
 					<div className='TimeConverterTemplatePlaceTimeDiv'>
 						<PlaceSearcher
 							onAdd={onAddPlace}
@@ -173,11 +303,12 @@ export function TimeConverterTemplate() {
 									inputStyle={{ textAlign: 'center' }}
 									value={timeRangeInput}
 									setValue={setTimeRangeInput}
+									onBlur={onBlurTimeRange}
 								/>
 								<Dropdown
 									options={timeUnitOptions}
 									value={selectedTimeUnit}
-									setValue={setSelectedTimeUnit}
+									onChange={onChangeTimeUnit}
 								/>
 							</div>
 							<div className='TimeConverterTemplateRightRangeDiv' />
@@ -199,14 +330,24 @@ export function TimeConverterTemplate() {
 								regionTimeHome={regionTimeHome}
 								timezone={regionTime.timezone}
 								setRegionTimeList={setRegionTimeList}
+								regionTimeList={regionTimeList}
 							/>
 						))}
 					</div>
-					<div className='TimeConverterTemplateAdvDiv'></div>
+					<div className='TimeConverterTemplateAdvDiv'>
+						<img
+							className='TimeConverterTemplateImg'
+							src='/ads.png'
+						/>
+					</div>
 					<div className='TimeConverterTemplateDetailsGroupDiv'>
 						<div className='TimeConverterTemplateDetailDiv'>
-							Welcome to G-Time Converter, your ultimate tool for
-							converting times between any cities around the
+							<h1 className='TimeConverterTemplateH'>
+								World Time Zone Converter: Easily Convert Time
+								Between Countries
+							</h1>
+							Welcome to Global Time Converter, your ultimate tool
+							for converting times between any cities around the
 							world. Instantly find out what time it is in any
 							city when it's a specific time in another city. For
 							example, discover what time it is in Seoul when it's
@@ -217,33 +358,40 @@ export function TimeConverterTemplate() {
 							zones.
 						</div>
 						<div className='TimeConverterTemplateDetailDiv'>
-							At G-Time Converter, accuracy and reliability are
-							our priorities. We provide real-time updates and
-							data from trusted global sources, ensuring you
-							always have the correct information at your
-							fingertips. Our advanced algorithm handles Daylight
-							Saving Time adjustments and other time zone
-							differences automatically. Whether you need to know
+							<h3 className='TimeConverterTemplateH'>
+								Why you need our global time zone converter
+							</h3>
+							At Global Time Converter, accuracy and reliability
+							are our priorities. Whether you need to know
 							the time difference between New York and Sydney,
 							Paris and Beijing, or any other cities, our tool
-							delivers precise and dependable results.
+							delivers precise and dependable results. Our tool is
+							designed for travelers, remote workers, and
+							international teams. Access our services from any
+							device, anywhere, and take advantage of features
+							like custom time zone lists, meeting planner tools,
+							and interactive world maps.
 						</div>
 						<div className='TimeConverterTemplateDetailDiv'>
-							Our tool is designed for travelers, remote workers,
-							and international teams. Access our services from
-							any device, anywhere, and take advantage of features
-							like custom time zone lists, meeting planner tools,
-							and interactive world maps. Join thousands of
-							satisfied users who rely on World Time Converter to
-							stay synchronized across the globe. Try our seamless
-							and efficient time conversion tool today, and never
-							miss a beat no matter where you are.
+							<h2 className='TimeConverterTemplateH'>
+								How to use our global time converter
+							</h2>
+                            <div className='TimeConverterTemplateProgressDiv'>
+                                1. Add a location or timezone
+                            </div>
+                            <div className='TimeConverterTemplateProgressDiv'>
+                                2. Adjust time for a location that is added and check the time of other locations as well
+                            </div>
+                            <div className='TimeConverterTemplateProgressDiv'>
+                                3. Easily adjust the times for locations using the time range (time interval)
+                            </div>
 						</div>
 					</div>
 				</div>
 				<Footer />
 			</div>
 			{alertInfo && <AlertMessage {...alertInfo} />}
+			{isProgress && <ProgressCircle />}
 		</div>
 	);
 }
@@ -251,4 +399,12 @@ export function TimeConverterTemplate() {
 const timeUnitOptions = [
 	{ value: timeUnit.min, label: timeUnit.min },
 	{ value: timeUnit.hour, label: timeUnit.hour },
+	{ value: timeUnit.day, label: timeUnit.day },
 ];
+
+const dateType = {
+	startDate: 'startDate',
+	endDate: 'endDate',
+} as const;
+
+type DateType = (typeof dateType)[keyof typeof dateType];
