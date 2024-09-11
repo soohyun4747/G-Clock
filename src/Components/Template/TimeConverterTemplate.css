@@ -5,9 +5,10 @@
 
 .TimeConverterTemplateTimeRangeGroupDiv {
 	display: flex;
-	width: 506px;
+	width: 508px;
 	align-items: flex-end;
 	padding-left: 12px;
+	padding-right: 12px;
 }
 
 .TimeConverterTemplateTimeRangeGroupDiv2 {
@@ -25,11 +26,8 @@
 	padding: 45px;
 	padding-left: 15px;
 	padding-top: 30px;
-	max-width: 900px;
-}
-
-.TimeConverterTemplateImg {
-	width: 100%;
+	max-width: 850px;
+	box-sizing: border-box;
 }
 
 
@@ -42,9 +40,9 @@
 	margin-bottom: 9px;
 }
 
-@media screen and (max-width: 1044px) {
+@media screen and (max-width: 899px) {
 	.TimeConverterTemplateBodyDiv {
-		max-width: 450px;
+		max-width: 375px;
 	}
 
 	.TimeConverterTemplateTimeRangeGroupDiv {
@@ -76,17 +74,20 @@
 	}
 
 	.TimeConverterTemplateImg {
+		margin: 0px 0px 0px -60px;
 		height: 100%;
 	}
 }
 
-@media screen and (min-width: 1045px) {
+@media screen and (min-width: 900px) {
 	.TimeConverterTemplateDetailsGroupDiv {
 		grid-template-columns: 1fr 1fr 1fr;
 	}
 
 	.TimeConverterTemplateImg {
 		margin: -60px 0px 0px 0px;
+		width: 100%;
+
 	}
 }
 

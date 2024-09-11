@@ -5,6 +5,7 @@ import {
 	AlertMessageProps,
 	AlertMessageSet,
 } from 'Components/Atom/AlertMessage/AlertMessage';
+import { LogoIcon2 } from 'Icons/Logo2';
 
 interface HeaderProps {
 	setAlertInfo: React.Dispatch<SetStateAction<AlertMessageProps | undefined>>;
@@ -31,7 +32,7 @@ export function Header(props: HeaderProps) {
 	return (
 		<div className='HeaderContainerDiv'>
 			<div className='HeaderLogoGroupDiv CursorPointer'>
-				<LogoIcon />
+				<LogoIcon2 />
 				<div className='HeaderTitleDiv HeaderTextDiv'>
 					Global Time Converter
 				</div>

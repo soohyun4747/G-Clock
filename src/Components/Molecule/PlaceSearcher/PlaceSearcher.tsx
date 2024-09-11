@@ -9,6 +9,7 @@ import {
 import Fuse from 'fuse.js';
 import { enterKeyCode } from 'util/Component';
 import { removeSpacesAndSigns } from 'util/String';
+import { List, ListItem, ListItemButton } from '@mui/material';
 
 export interface StateCity {
 	country: string;
@@ -28,16 +29,21 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 	const [filteredStatesCitiesList, setFilteredStatesCitiesList] = useState<
 		StateCity[]
 	>([]);
+	const [isListOpen, setIsListOpen] = useState<boolean>(false);
 
 	const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setStateOrCity(event.target.value);
 
-		setFilteredStatesCitiesList(
-			fuse
-				.search(stateOrCity)
-				.slice(0, 5) // Take the top 5 results
-				.map((result) => result.item)
-		);
+		const filteredList = fuse
+			.search(event.target.value)
+			.slice(0, 5) // Take the top 5 results
+			.map((result) => result.item);
+
+		setFilteredStatesCitiesList(filteredList);
+
+		if (filteredList.length > 0) {
+			setIsListOpen(true);
+		}
 	};
 
 	const onClickAdd = () => {
@@ -67,6 +73,11 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 		}
 	};
 
+	const onClickListItemButton = (value: string) => {
+		setStateOrCity(value);
+		setIsListOpen(false);
+	};
+
 	return (
 		<div
 			className='PlaceSearcherContainerDiv'
@@ -76,19 +87,39 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 					type='text'
 					placeholder='search place'
 					className='PlaceSearcherInput'
-					list='states-cities-list'
+					// list='states-cities-list'
 					onChange={onChangeInput}
 					value={stateOrCity}
 					onKeyDown={onEnterKeyDown}
 				/>
-				<datalist id='states-cities-list'>
+				{/* <datalist id='states-cities-list'>
 					{filteredStatesCitiesList.map((stateOrCity, i) => (
 						<option
 							key={i}
 							value={stateOrCity.name}
 							label={`${stateOrCity.country}, ${stateOrCity.name}`}></option>
 					))}
-				</datalist>
+				</datalist> */}
+				{isListOpen && (
+					<List className='PlaceSearcherList'>
+						{filteredStatesCitiesList.map((stateOrCity, i) => (
+							<ListItem
+								className='PlaceSearcherListItem'
+								key={i}>
+								<ListItemButton
+									className='PlaceSearcherListItemButton'
+									onClick={() =>
+										onClickListItemButton(stateOrCity.name)
+									}>
+									<div className='PlaceSearcherListItemDiv'>
+										{stateOrCity.name}
+									</div>
+									<div className='PlaceSearcherListItemDiv2'>{`${stateOrCity.country}, ${stateOrCity.name}`}</div>
+								</ListItemButton>
+							</ListItem>
+						))}
+					</List>
+				)}
 			</div>
 			<WordButton
 				label='Add'

@@ -3,13 +3,14 @@
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	padding: 6px;
-	border: solid 1px #14aaff;
-	color: #14aaff;
+	color: white;
 	width: fit-content;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+	background-color: #14aaff;
+	font-size: 15px;
 }
 
 .WordButtonContainerDiv:hover {

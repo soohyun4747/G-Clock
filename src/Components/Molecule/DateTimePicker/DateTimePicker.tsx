@@ -89,11 +89,21 @@ export function DateTimePicker(props: DateTimePickerProps) {
 		setCalendarVisible((prev) => !prev);
 	};
 
+
+	const getDateStr = (date: Date) => {
+		const [dayOfWeek, month, day] = date.toDateString().split(' ');
+
+		return `${dayOfWeek}, ${month} ${day}`;
+	};
+
 	return (
 		<div className='DateTimePickerContainerDiv'>
-			{props.label && (
-				<div className='DateTimePickerLabelDiv'>{props.label}</div>
-			)}
+			<div className='DateTimePickerLabelContainerDiv'>
+				{props.label && (
+					<div className='DateTimePickerLabelDiv'>{props.label}</div>
+				)}
+				<div className='DateTimePickerLabelDiv DateTimePickerDateLabelDiv'>{getDateStr(props.date)}</div>
+			</div>
 			<div
 				style={props.style}
 				ref={inputContainerRef}
