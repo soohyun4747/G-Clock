@@ -122,12 +122,14 @@ export function RegionTimeGroup(props: RegionTimeGroupProps) {
 
 			<div className='RegionTimeGroupIconsDiv'>
 				<IconButton
+					aria-label='home'
 					icon={<HomeIcon />}
 					onClick={() => props.onClickHome(props)}
 					style={{ opacity: isHome ? 0.3 : 1, marginBottom: 9 }}
 					disabled={isHome ? true : false}
 				/>
 				<IconButton
+					aria-label='close'
 					icon={<CloseIcon />}
 					onClick={() => props.onClickDelete(props.index)}
 					style={{

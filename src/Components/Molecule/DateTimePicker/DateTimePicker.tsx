@@ -112,6 +112,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
 					<IconButton
 						icon={<CalendarIcon />}
 						onClick={onClickCalendarIcon}
+						aria-label='calendar'
 					/>
 				</div>
 				<input
@@ -124,6 +125,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
 					max={maxDate}
 					onBlur={onBlurDate}
 					onKeyDown={onEnterKeyDown}
+					aria-label='date and time'
 				/>
 			</div>
 			{calendarVisible && (

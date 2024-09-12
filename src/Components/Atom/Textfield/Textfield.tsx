@@ -1,9 +1,10 @@
 import { onEnterKeyDown } from 'util/Component';
 import './Textfield.css';
+import { HTMLAttributes } from 'react';
 
 export interface TextfieldProps {
 	style?: React.CSSProperties;
-	inputStyle?: React.CSSProperties;
+	inputAttributes?: HTMLAttributes<HTMLInputElement>;
 	value: string | number;
 	setValue: React.Dispatch<React.SetStateAction<string | number>>;
 	onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -20,9 +21,10 @@ export function Textfield(props: TextfieldProps) {
 			style={props.style}>
 			<input
 				className='TextfieldInput'
+				{...props.inputAttributes}
 				value={props.value}
 				onChange={onChangeInput}
-				style={props.inputStyle}
+				// style={props.inputStyle}
 				onBlur={props.onBlur}
 				onKeyDown={onEnterKeyDown}
 			/>

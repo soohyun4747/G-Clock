@@ -1,3 +1,4 @@
+import { HTMLAttributes } from 'react';
 import './Dropdown.css';
 
 export interface DropdownOption {
@@ -9,6 +10,7 @@ export interface DropdownProps {
 	options: DropdownOption[];
 	value: string | number;
 	style?: React.CSSProperties;
+	selectAttributes?: HTMLAttributes<HTMLSelectElement>
 	onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -20,6 +22,7 @@ export function Dropdown(props: DropdownProps) {
 			<select
 				value={props.value}
 				className='DropdownSelect'
+				{...props.selectAttributes}
 				onChange={props.onChange}>
 				{props.options.map((option, i) => (
 					<option
