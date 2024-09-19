@@ -48,12 +48,6 @@ export function RegionTime(props: RegionTimeProps) {
 		}
 	};
 
-	const getDateStr = (date: Date) => {
-		const [dayOfWeek, month, day] = date.toDateString().split(' ');
-
-		return `${dayOfWeek}, ${month} ${day}`;
-	};
-
 	return (
 		<div
 			className='RegionTimeContainerDiv'
@@ -70,7 +64,7 @@ export function RegionTime(props: RegionTimeProps) {
 								<HomeIcon />
 							) : (
 								<div className='RegionTimeDiffDiv'>
-									{getHomeTimeDiffStr(props.homeTimeDiff)}
+									{getHomeTimeDiffStr(props.homeTimeDiff)} h
 								</div>
 							)}
 						</div>
@@ -80,7 +74,7 @@ export function RegionTime(props: RegionTimeProps) {
 					{props.stateCity.country}
 				</div>
 			</div>
-			<div>
+			{/* <div>
 				<div className='RegionTimeTimeDiv'>
 					{getDateTimeStr(props.startDate)}
 				</div>
@@ -96,7 +90,7 @@ export function RegionTime(props: RegionTimeProps) {
 				<div className='RegionTimeCountryDateDiv'>
 					{getDateStr(props.endDate)}
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 }

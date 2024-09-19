@@ -276,8 +276,15 @@ export function TimeConverterTemplate() {
 						</div>
 						<div className='TimeConverterTemplateTimeRangeDiv'>
 							<Textfield
-								style={{ width: 67, marginRight: 9, height: 36 }}
-								inputStyle={{ textAlign: 'center' }}
+								style={{
+									width: 67,
+									marginRight: 9,
+									height: 36,
+								}}
+								inputAttributes={{
+									style: { textAlign: 'center' },
+                                    'aria-label': 'time interval'
+								}}
 								value={timeRangeInput}
 								setValue={setTimeRangeInput}
 								onBlur={onBlurTimeRange}
@@ -286,7 +293,8 @@ export function TimeConverterTemplate() {
 								options={timeUnitOptions}
 								value={selectedTimeUnit}
 								onChange={onChangeTimeUnit}
-                                style={{height: 36}}
+								style={{ height: 36 }}
+								selectAttributes={{ 'aria-label': 'time unit' }}
 							/>
 						</div>
 					</div>
@@ -301,7 +309,9 @@ export function TimeConverterTemplate() {
 							<div className='TimeConverterTemplateTimeRangeDiv'>
 								<Textfield
 									style={{ width: 67, marginRight: 9 }}
-									inputStyle={{ textAlign: 'center' }}
+									inputAttributes={{
+										style: { textAlign: 'center' },
+									}}
 									value={timeRangeInput}
 									setValue={setTimeRangeInput}
 									onBlur={onBlurTimeRange}
@@ -339,6 +349,7 @@ export function TimeConverterTemplate() {
 						<img
 							className='TimeConverterTemplateImg'
 							src='/ads.png'
+							alt='a flight with different countries'
 						/>
 					</div>
 					<div className='TimeConverterTemplateDetailsGroupDiv'>
@@ -363,29 +374,31 @@ export function TimeConverterTemplate() {
 								Why you need our global time zone converter
 							</h3>
 							At Global Time Converter, accuracy and reliability
-							are our priorities. Whether you need to know
-							the time difference between New York and Sydney,
-							Paris and Beijing, or any other cities, our tool
-							delivers precise and dependable results. Our tool is
-							designed for travelers, remote workers, and
-							international teams. Access our services from any
-							device, anywhere, and take advantage of features
-							like custom time zone lists, meeting planner tools,
-							and interactive world maps.
+							are our priorities. Whether you need to know the
+							time difference between New York and Sydney, Paris
+							and Beijing, or any other cities, our tool delivers
+							precise and dependable results. Our tool is designed
+							for travelers, remote workers, and international
+							teams. Access our services from any device,
+							anywhere, and take advantage of features like custom
+							time zone lists, meeting planner tools, and
+							interactive world maps.
 						</div>
 						<div className='TimeConverterTemplateDetailDiv'>
 							<h2 className='TimeConverterTemplateH'>
 								How to use our global time converter
 							</h2>
-                            <div className='TimeConverterTemplateProgressDiv'>
-                                1. Add a location or timezone
-                            </div>
-                            <div className='TimeConverterTemplateProgressDiv'>
-                                2. Adjust time for a location that is added and check the time of other locations as well
-                            </div>
-                            <div className='TimeConverterTemplateProgressDiv'>
-                                3. Easily adjust the times for locations using the time interval
-                            </div>
+							<div className='TimeConverterTemplateProgressDiv'>
+								1. Add a location or timezone
+							</div>
+							<div className='TimeConverterTemplateProgressDiv'>
+								2. Adjust time for a location that is added and
+								check the time of other locations as well
+							</div>
+							<div className='TimeConverterTemplateProgressDiv'>
+								3. Easily adjust the times for locations using
+								the time interval
+							</div>
 						</div>
 					</div>
 				</div>

@@ -1,9 +1,6 @@
 .RegionTimeContainerDiv {
-	border: solid 1px #b2b2b2;
+	/* border: solid 1px black; */
 	box-sizing: border-box;
-	padding: 9px;
-	padding-left: 12px;
-	padding-right: 12px;
 	display: flex;
 	width: 350px;
 	align-items: center;
@@ -16,6 +13,7 @@
 .RegionTimeStateGroupDiv {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 }
 
 .RegionTimeStateDiv {
@@ -25,7 +23,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	max-width: 114px;
+	max-width: 175px;
 }
 
 .RegionTimeTimeDiv {
@@ -33,9 +31,9 @@
 	font-weight: 900;
 }
 
-@media screen and (max-width: 1044px) {
+@media screen and (max-width: 899px) {
 	.RegionTimeStateDiv {
-		max-width: 150px;
+		max-width: 235px;
 	}
 	.RegionTimeTimeDiv {
 		font-size: 16px;
@@ -43,11 +41,11 @@
 }
 
 
-@media screen and (max-width: 380px) {
+/* @media screen and (max-width: 380px) {
 	.RegionTimeStateDiv {
 		max-width: 54px;
 	}
-}
+} */
 
 .RegionTimeCountryDateDiv {
 	padding-top: 3px;

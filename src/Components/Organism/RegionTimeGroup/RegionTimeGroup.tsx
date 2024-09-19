@@ -101,7 +101,7 @@ export function RegionTimeGroup(props: RegionTimeGroupProps) {
 		<div
 			className='RegionTimeGroupContainerDiv'
 			style={props.style}>
-			<div className='RegionTimeGroupGridItem1'>
+			{/* <div className='RegionTimeGroupGridItem1'>
 				<div className='RegionTimeGroupIconsDiv'>
 					<IconButton
 						icon={<HomeIcon />}
@@ -118,31 +118,54 @@ export function RegionTimeGroup(props: RegionTimeGroupProps) {
 						disabled={isRegionTimeListOne ? true : false}
 					/>
 				</div>
-				<RegionTime
-					style={{ width: '100%' }}
-					stateCity={props.stateCity}
-					startDate={props.startDate}
-					endDate={props.endDate}
-					regionTimeHome={props.regionTimeHome}
-					timezone={props.timezone}
-					homeTimeDiff={timeHourDiff}
+			</div> */}
+
+			<div className='RegionTimeGroupIconsDiv'>
+				<IconButton
+					aria-label='home'
+					icon={<HomeIcon />}
+					onClick={() => props.onClickHome(props)}
+					style={{ opacity: isHome ? 0.3 : 1, marginBottom: 9 }}
+					disabled={isHome ? true : false}
+				/>
+				<IconButton
+					aria-label='close'
+					icon={<CloseIcon />}
+					onClick={() => props.onClickDelete(props.index)}
+					style={{
+						opacity: isRegionTimeListOne ? 0.3 : 1,
+					}}
+					disabled={isRegionTimeListOne ? true : false}
 				/>
 			</div>
-			<div className='RegionTimeGroupGridItem2'>
-				<DateTimePicker
-					date={props.startDate}
-					label='From'
-					onChangeDate={onChangeStartDate}
-					style={{width: 'auto'}}
-				/>
-			</div>
-			<div className='RegionTimeGroupGridItem3'>
-				<DateTimePicker
-					date={props.endDate}
-					label='To'
-					onChangeDate={onChangeEndDate}
-					style={{width: 'auto'}}
-				/>
+			<div className='RegionTimeGroupCardDiv'>
+				<div className='RegionTimeGroupGridItem1'>
+					<RegionTime
+						style={{ width: '100%' }}
+						stateCity={props.stateCity}
+						startDate={props.startDate}
+						endDate={props.endDate}
+						regionTimeHome={props.regionTimeHome}
+						timezone={props.timezone}
+						homeTimeDiff={timeHourDiff}
+					/>
+				</div>
+				<div className='RegionTimeGroupGridItem2'>
+					<DateTimePicker
+						date={props.startDate}
+						label='From'
+						onChangeDate={onChangeStartDate}
+						style={{ width: 'auto' }}
+					/>
+				</div>
+				<div className='RegionTimeGroupGridItem3'>
+					<DateTimePicker
+						date={props.endDate}
+						label='To'
+						onChangeDate={onChangeEndDate}
+						style={{ width: 'auto' }}
+					/>
+				</div>
 			</div>
 		</div>
 	);
