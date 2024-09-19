@@ -64,7 +64,7 @@ export function RegionTime(props: RegionTimeProps) {
 								<HomeIcon />
 							) : (
 								<div className='RegionTimeDiffDiv'>
-									{getHomeTimeDiffStr(props.homeTimeDiff)}
+									{getHomeTimeDiffStr(props.homeTimeDiff)} h
 								</div>
 							)}
 						</div>

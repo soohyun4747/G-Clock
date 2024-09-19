@@ -1,5 +1,12 @@
 import './PlaceSearcher.css';
-import { State, Country, IState } from 'country-state-city';
+import {
+	State,
+	Country,
+	IState,
+	City,
+	ICity,
+	ICountry,
+} from 'country-state-city';
 import { SetStateAction, useState } from 'react';
 import { WordButton } from 'Components/Atom/WordButton/WordButton';
 import {
@@ -133,22 +140,43 @@ export function PlaceSearcher(props: PlaceSearcherProps) {
 
 const getStatesCitiesList = () => {
 	const statesList: IState[] = State.getAllStates();
+	const citiesList: ICity[] = City.getAllCities();	
 
 	const listOfStatesAndCities: StateCity[] = [];
+
+	const pushToListOfStatesAndCities = (
+		country: ICountry,
+		stateOrCity: IState | ICity
+	) => {
+		listOfStatesAndCities.push({
+			country: country.name,
+			name: stateOrCity.name,
+			latitude: stateOrCity.latitude
+				? Number(stateOrCity.latitude)
+				: undefined,
+			longitude: stateOrCity.longitude
+				? Number(stateOrCity.longitude)
+				: undefined,
+		});
+	};
 
 	statesList.forEach((state) => {
 		const country = Country.getCountryByCode(state.countryCode);
 		if (country) {
-			listOfStatesAndCities.push({
-				country: country.name,
-				name: state.name,
-				latitude: state.latitude ? Number(state.latitude) : undefined,
-				longitude: state.longitude
-					? Number(state.longitude)
-					: undefined,
-			});
+			pushToListOfStatesAndCities(country, state)
 		}
 	});
+
+	// citiesList.forEach((city) => {
+	// 	const country = Country.getCountryByCode(city.countryCode);
+
+	// 	if (
+	// 		country &&
+	// 		!listOfStatesAndCities.some((item) => item.name === city.name)
+	// 	) {
+	// 		pushToListOfStatesAndCities(country, city)
+	// 	}
+	// });
 
 	return listOfStatesAndCities;
 };
