@@ -49,6 +49,7 @@ export function TimeConverterTemplate() {
 
 	const setStateInitRegionTime = () => {
 		const location = getLocation();
+                
 		location
 			.then((response) => {
 				const data: IPResponse = response.data;
@@ -66,7 +67,7 @@ export function TimeConverterTemplate() {
 				setRegionTimeList([regionTime]);
 				setRegionTimeHome(regionTime);
 			})
-			.catch((error) => {
+			.catch((error) => {                
 				const regionTime = {
 					stateCity: SeoulInfo,
 					startDate: moment.tz(new Date(), SeoulTimezone).toDate(),
@@ -283,7 +284,7 @@ export function TimeConverterTemplate() {
 								}}
 								inputAttributes={{
 									style: { textAlign: 'center' },
-                                    'aria-label': 'time interval'
+									'aria-label': 'time interval',
 								}}
 								value={timeRangeInput}
 								setValue={setTimeRangeInput}
@@ -358,31 +359,30 @@ export function TimeConverterTemplate() {
 								World Time Zone Converter: Easily Convert Time
 								Between Countries
 							</h1>
-							Welcome to Global Time Converter, your ultimate tool
-							for converting times between any cities around the
-							world. Instantly find out what time it is in any
-							city when it's a specific time in another city. For
-							example, discover what time it is in Seoul when it's
-							3pm in Toronto, or see the time in Tokyo when it's
-							8am in London. Our user-friendly interface ensures
-							quick and accurate results, making it easy to plan
-							meetings, calls, and travel across different time
+							Welcome to Global Time Converter, your best tool for
+							converting times between any cities around the
+							world. Instantly find out what time and date it is
+							in any city when it's a specific time and date in
+							another city. For example, discover what time and
+							date it is in Seoul when it's 3pm on this Friday in
+							Toronto. Our user-friendly interface ensures quick
+							and accurate results, making it easy to plan
+							meetings and calls by checking the different time
 							zones.
 						</div>
 						<div className='TimeConverterTemplateDetailDiv'>
 							<h3 className='TimeConverterTemplateH'>
 								Why you need our global time zone converter
 							</h3>
-							At Global Time Converter, accuracy and reliability
-							are our priorities. Whether you need to know the
+							At our Global Time Converter, you can easily
+							checkout the exact future time in different
+							countries and regions. Whether you need to know the
 							time difference between New York and Sydney, Paris
 							and Beijing, or any other cities, our tool delivers
 							precise and dependable results. Our tool is designed
 							for travelers, remote workers, and international
 							teams. Access our services from any device,
-							anywhere, and take advantage of features like custom
-							time zone lists, meeting planner tools, and
-							interactive world maps.
+							anywhere.
 						</div>
 						<div className='TimeConverterTemplateDetailDiv'>
 							<h2 className='TimeConverterTemplateH'>

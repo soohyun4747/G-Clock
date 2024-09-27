@@ -2,7 +2,9 @@ import {
 	TimeScroll,
 	minuteScrollValues,
 } from 'Components/Molecule/TimeSelector/TimeSelector';
+import { TimeUnit, timeUnit } from 'lib/const';
 import moment from 'moment';
+import 'moment-timezone';
 
 // export interface ScrollTime {
 // 	minute: number;
@@ -48,7 +50,7 @@ export const dayHourMinuteToStrFormat = (value: number) => {
 	}
 };
 
-export const dateAfter = (minutes: number, timeZone: string) => {
+export const dateAfter = (minutes: number, timeZone: string) => {	
 	return moment.tz(new Date().getTime() + minutes * 60000, timeZone).toDate();
 };
 
@@ -83,3 +85,4 @@ export const calculateHourDifference = (
 export const hoursToMilliseconds = (hours: number): number => {
 	return hours * 60 * 60 * 1000;
 };
+
