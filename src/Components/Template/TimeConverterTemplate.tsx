@@ -14,7 +14,7 @@ import {
 	minuteToMsec,
 	timeUnit,
 } from 'lib/const';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { convertTimeZone, dateAfter } from 'util/Time';
 import './TimeConverterTemplate.css';
 import { Textfield } from 'Components/Atom/Textfield/Textfield';
@@ -31,6 +31,7 @@ import {
 	AlertMessageSet,
 } from 'Components/Atom/AlertMessage/AlertMessage';
 import { ProgressCircle } from 'Components/Atom/ProgressCircle/ProgressCircle';
+import { TimeInterval } from 'Components/Molecule/TimeInterval/TimeInterval';
 
 export function TimeConverterTemplate() {
 	const [timeRange, setTimeRange] = useState<number>(30);
@@ -49,6 +50,7 @@ export function TimeConverterTemplate() {
 
 	const setStateInitRegionTime = () => {
 		const location = getLocation();
+
 		location
 			.then((response) => {
 				const data: IPResponse = response.data;
@@ -259,10 +261,14 @@ export function TimeConverterTemplate() {
 		return unitMsec;
 	};
 
-	const onChangeTimeUnit = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		const timeRangeMsec = getTimeRangeMsec(timeRange, event.target.value);
-		setRegionTimeHomeWithTimeDiff(timeRangeMsec);
-		setSelectedTimeUnit(event.target.value);
+	// const onChangeTimeUnit = (event: React.ChangeEvent<HTMLSelectElement>) => {
+	// 	const timeRangeMsec = getTimeRangeMsec(timeRange, event.target.value);
+	// 	setRegionTimeHomeWithTimeDiff(timeRangeMsec);
+	// 	setSelectedTimeUnit(event.target.value);
+	// };
+
+	const onChangeTimeRange = (timeDiff: number) => {
+		setRegionTimeHomeWithTimeDiff(timeDiff);
 	};
 
 	return (
@@ -270,7 +276,7 @@ export function TimeConverterTemplate() {
 			<Header setAlertInfo={setAlertInfo} />
 			<div className='TimeConverterBodyFooterDiv'>
 				<div className='TimeConverterTemplateBodyDiv'>
-					<div className='TimeConverterTemplateTimeRangeGroupDiv2'>
+					{/* <div className='TimeConverterTemplateTimeRangeGroupDiv2'>
 						<div className='TimeConverterTemplateTimeRangeLabelDiv'>
 							Time Interval
 						</div>
@@ -283,7 +289,7 @@ export function TimeConverterTemplate() {
 								}}
 								inputAttributes={{
 									style: { textAlign: 'center' },
-                                    'aria-label': 'time interval'
+									'aria-label': 'time interval',
 								}}
 								value={timeRangeInput}
 								setValue={setTimeRangeInput}
@@ -297,7 +303,7 @@ export function TimeConverterTemplate() {
 								selectAttributes={{ 'aria-label': 'time unit' }}
 							/>
 						</div>
-					</div>
+					</div> */}
 					<div className='TimeConverterTemplatePlaceTimeDiv'>
 						<PlaceSearcher
 							onAdd={onAddPlace}
@@ -306,7 +312,7 @@ export function TimeConverterTemplate() {
 						/>
 						<div className='TimeConverterTemplateTimeRangeGroupDiv'>
 							<div className='TimeConverterTemplateLeftRangeDiv' />
-							<div className='TimeConverterTemplateTimeRangeDiv'>
+							{/* <div className='TimeConverterTemplateTimeRangeDiv'>
 								<Textfield
 									style={{ width: 67, marginRight: 9 }}
 									inputAttributes={{
@@ -321,7 +327,16 @@ export function TimeConverterTemplate() {
 									value={selectedTimeUnit}
 									onChange={onChangeTimeUnit}
 								/>
-							</div>
+							</div> */}
+							{regionTimeHome && (
+								<TimeInterval
+									timeInterval={
+										regionTimeHome.endDate.getTime() -
+										regionTimeHome.startDate.getTime()
+									}
+									onChangeTimeRange={onChangeTimeRange}
+								/>
+							)}
 							<div className='TimeConverterTemplateRightRangeDiv' />
 						</div>
 					</div>
@@ -345,44 +360,43 @@ export function TimeConverterTemplate() {
 							/>
 						))}
 					</div>
-					<div className='TimeConverterTemplateAdvDiv'>
+					{/* <div className='TimeConverterTemplateAdvDiv'>
 						<img
 							className='TimeConverterTemplateImg'
 							src='/ads.png'
 							alt='a flight with different countries'
 						/>
-					</div>
+					</div> */}
 					<div className='TimeConverterTemplateDetailsGroupDiv'>
 						<div className='TimeConverterTemplateDetailDiv'>
 							<h1 className='TimeConverterTemplateH'>
 								World Time Zone Converter: Easily Convert Time
 								Between Countries
 							</h1>
-							Welcome to Global Time Converter, your ultimate tool
-							for converting times between any cities around the
-							world. Instantly find out what time it is in any
-							city when it's a specific time in another city. For
-							example, discover what time it is in Seoul when it's
-							3pm in Toronto, or see the time in Tokyo when it's
-							8am in London. Our user-friendly interface ensures
-							quick and accurate results, making it easy to plan
-							meetings, calls, and travel across different time
+							Welcome to Global Time Converter, your best tool for
+							converting times between any cities around the
+							world. Instantly find out what time and date it is
+							in any city when it's a specific time and date in
+							another city. For example, discover what time and
+							date it is in Seoul when it's 3pm on this Friday in
+							Toronto. Our user-friendly interface ensures quick
+							and accurate results, making it easy to plan
+							meetings and calls by checking the different time
 							zones.
 						</div>
 						<div className='TimeConverterTemplateDetailDiv'>
 							<h3 className='TimeConverterTemplateH'>
 								Why you need our global time zone converter
 							</h3>
-							At Global Time Converter, accuracy and reliability
-							are our priorities. Whether you need to know the
+							At our Global Time Converter, you can easily
+							checkout the exact future time in different
+							countries and regions. Whether you need to know the
 							time difference between New York and Sydney, Paris
 							and Beijing, or any other cities, our tool delivers
 							precise and dependable results. Our tool is designed
 							for travelers, remote workers, and international
 							teams. Access our services from any device,
-							anywhere, and take advantage of features like custom
-							time zone lists, meeting planner tools, and
-							interactive world maps.
+							anywhere.
 						</div>
 						<div className='TimeConverterTemplateDetailDiv'>
 							<h2 className='TimeConverterTemplateH'>

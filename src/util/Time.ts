@@ -1,13 +1,6 @@
-import {
-	TimeScroll,
-	minuteScrollValues,
-} from 'Components/Molecule/TimeSelector/TimeSelector';
+import { TimeScroll } from 'Components/Molecule/TimeSelector/TimeSelector';
 import moment from 'moment';
-
-// export interface ScrollTime {
-// 	minute: number;
-// 	hour: number | null;
-// }
+import 'moment-timezone';
 
 interface TimeScrollDict {
 	value: number;
@@ -83,3 +76,34 @@ export const calculateHourDifference = (
 export const hoursToMilliseconds = (hours: number): number => {
 	return hours * 60 * 60 * 1000;
 };
+
+export function daysToMsec(days: number): number {
+	const mSecPerDay = 24 * 60 * 60 * 1000;
+	return days * mSecPerDay;
+}
+
+export function hoursToMsec(hours: number): number {
+	const mSecPerHour = 60 * 60 * 1000;
+	return hours * mSecPerHour;
+}
+
+export function minutesToMsec(minutes: number): number {
+	const mSecPerMinutes = 60 * 1000;
+	return minutes * mSecPerMinutes;
+}
+
+export function convertMilliseconds(ms: number) {
+	const millisecondsPerMinute = 60 * 1000;
+	const millisecondsPerHour = 60 * millisecondsPerMinute;
+	const millisecondsPerDay = 24 * millisecondsPerHour;
+
+	const days = Math.floor(ms / millisecondsPerDay);
+	ms %= millisecondsPerDay;
+
+	const hours = Math.floor(ms / millisecondsPerHour);
+	ms %= millisecondsPerHour;
+
+	const minutes = Math.floor(ms / millisecondsPerMinute);
+
+	return { days, hours, minutes };
+}
