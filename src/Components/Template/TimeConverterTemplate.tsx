@@ -14,7 +14,7 @@ import {
 	minuteToMsec,
 	timeUnit,
 } from 'lib/const';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { convertTimeZone, dateAfter } from 'util/Time';
 import './TimeConverterTemplate.css';
 import { Textfield } from 'Components/Atom/Textfield/Textfield';
@@ -31,6 +31,7 @@ import {
 	AlertMessageSet,
 } from 'Components/Atom/AlertMessage/AlertMessage';
 import { ProgressCircle } from 'Components/Atom/ProgressCircle/ProgressCircle';
+import { TimeInterval } from 'Components/Molecule/TimeInterval/TimeInterval';
 
 export function TimeConverterTemplate() {
 	const [timeRange, setTimeRange] = useState<number>(30);
@@ -49,7 +50,7 @@ export function TimeConverterTemplate() {
 
 	const setStateInitRegionTime = () => {
 		const location = getLocation();
-                
+
 		location
 			.then((response) => {
 				const data: IPResponse = response.data;
@@ -67,7 +68,7 @@ export function TimeConverterTemplate() {
 				setRegionTimeList([regionTime]);
 				setRegionTimeHome(regionTime);
 			})
-			.catch((error) => {                
+			.catch((error) => {
 				const regionTime = {
 					stateCity: SeoulInfo,
 					startDate: moment.tz(new Date(), SeoulTimezone).toDate(),
@@ -260,10 +261,14 @@ export function TimeConverterTemplate() {
 		return unitMsec;
 	};
 
-	const onChangeTimeUnit = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		const timeRangeMsec = getTimeRangeMsec(timeRange, event.target.value);
-		setRegionTimeHomeWithTimeDiff(timeRangeMsec);
-		setSelectedTimeUnit(event.target.value);
+	// const onChangeTimeUnit = (event: React.ChangeEvent<HTMLSelectElement>) => {
+	// 	const timeRangeMsec = getTimeRangeMsec(timeRange, event.target.value);
+	// 	setRegionTimeHomeWithTimeDiff(timeRangeMsec);
+	// 	setSelectedTimeUnit(event.target.value);
+	// };
+
+	const onChangeTimeRange = (timeDiff: number) => {
+		setRegionTimeHomeWithTimeDiff(timeDiff);
 	};
 
 	return (
@@ -271,7 +276,7 @@ export function TimeConverterTemplate() {
 			<Header setAlertInfo={setAlertInfo} />
 			<div className='TimeConverterBodyFooterDiv'>
 				<div className='TimeConverterTemplateBodyDiv'>
-					<div className='TimeConverterTemplateTimeRangeGroupDiv2'>
+					{/* <div className='TimeConverterTemplateTimeRangeGroupDiv2'>
 						<div className='TimeConverterTemplateTimeRangeLabelDiv'>
 							Time Interval
 						</div>
@@ -298,7 +303,7 @@ export function TimeConverterTemplate() {
 								selectAttributes={{ 'aria-label': 'time unit' }}
 							/>
 						</div>
-					</div>
+					</div> */}
 					<div className='TimeConverterTemplatePlaceTimeDiv'>
 						<PlaceSearcher
 							onAdd={onAddPlace}
@@ -307,7 +312,7 @@ export function TimeConverterTemplate() {
 						/>
 						<div className='TimeConverterTemplateTimeRangeGroupDiv'>
 							<div className='TimeConverterTemplateLeftRangeDiv' />
-							<div className='TimeConverterTemplateTimeRangeDiv'>
+							{/* <div className='TimeConverterTemplateTimeRangeDiv'>
 								<Textfield
 									style={{ width: 67, marginRight: 9 }}
 									inputAttributes={{
@@ -322,7 +327,16 @@ export function TimeConverterTemplate() {
 									value={selectedTimeUnit}
 									onChange={onChangeTimeUnit}
 								/>
-							</div>
+							</div> */}
+							{regionTimeHome && (
+								<TimeInterval
+									timeInterval={
+										regionTimeHome.endDate.getTime() -
+										regionTimeHome.startDate.getTime()
+									}
+									onChangeTimeRange={onChangeTimeRange}
+								/>
+							)}
 							<div className='TimeConverterTemplateRightRangeDiv' />
 						</div>
 					</div>
@@ -346,13 +360,13 @@ export function TimeConverterTemplate() {
 							/>
 						))}
 					</div>
-					<div className='TimeConverterTemplateAdvDiv'>
+					{/* <div className='TimeConverterTemplateAdvDiv'>
 						<img
 							className='TimeConverterTemplateImg'
 							src='/ads.png'
 							alt='a flight with different countries'
 						/>
-					</div>
+					</div> */}
 					<div className='TimeConverterTemplateDetailsGroupDiv'>
 						<div className='TimeConverterTemplateDetailDiv'>
 							<h1 className='TimeConverterTemplateH'>

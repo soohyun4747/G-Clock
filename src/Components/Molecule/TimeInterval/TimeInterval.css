@@ -1,0 +1,16 @@
+.timeIntervalGroupDiv {
+	display: flex;
+	align-items: center;
+	font-size: 12px;
+}
+
+.timeIntervalDiv {
+	display: flex;
+	align-items: center;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.timeIntervalPadding {
+	padding-right: 14px;
+}
